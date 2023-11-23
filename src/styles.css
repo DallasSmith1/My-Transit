@@ -5,7 +5,7 @@
   font-weight: 400;
 
   color: #0f0f0f;
-  background-color: #000000;
+  background-color: #f6f6f6;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -72,10 +72,10 @@ button {
 }
 
 button:hover {
-  border-color: #139232;
+  border-color: #396cd8;
 }
 button:active {
-  border-color: #139232;
+  border-color: #396cd8;
   background-color: #e8e8e8;
 }
 
@@ -90,8 +90,8 @@ button {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    color: #000000;
-    background-color: #000000;
+    color: #f6f6f6;
+    background-color: #2f2f2f;
   }
 
   a:hover {
