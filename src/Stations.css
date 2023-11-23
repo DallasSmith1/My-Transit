@@ -1,17 +1,15 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-color: gray;
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
-    color: white;
+    align-items: top;
+    color: white;   
 }
 
 .container {
-    text-align: center;
+    text-align: top;
 }
 
 .search-container {

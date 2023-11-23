@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./styles.css";
 import Nav from "./Nav";
+import BottomNav from "./BottomNav";
 import Home from "./Home";
 import Schedule from "./Schedule";
 import Stations from "./Stations";
@@ -27,5 +28,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           </Route>
         </Switch>
       </div>
+      <BottomNav />
     </Router>
 );
