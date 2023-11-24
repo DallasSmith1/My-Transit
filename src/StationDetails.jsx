@@ -1,46 +1,39 @@
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useState } from "react";
 import "./StationDetails.css";
 import { invoke } from "@tauri-apps/api/tauri";
 
 function StationDetails()
 {
-    const {id} = useParams();
+    let mapSrc = "https://maps.google.com/maps?q=43.8477020, -79.0415600&output=embed";
 
-    //let data = await invoke("get_stop_details", {id});
-
-    //let obj = JSON.parse(data);
-
-
+    let obj = JSON.parse(localStorage.getItem("stopJSON"));
 
     return (
         <div>
             <br/>
-            <h1>[StopName]</h1>
-
+            <h1>{obj}</h1>
             <address>
-                <strong>Address:</strong> [StreetNumber] [StreetName]
-            </address>
-            <address>
-                <strong>Code:</strong> {id}
+                <strong>Code:</strong>
             </address>
 
             <div className="facilities">
             <table>
-            <tr>
-                <th colSpan="2">Location</th>
-            </tr>
-            <tr>
-                <td>
-                <ul>
-                    <li><strong>City: </strong>[City]</li>
-                    <li><strong>Intersection: </strong>[Intersection]</li>
-                    <li><strong>Directions: </strong>[DrivingDirections]</li>
-                </ul>
-                </td>
-                <td>
-                    
-                </td>
-            </tr>
+                <tbody>
+                    <tr>
+                        <td>
+                        <ul>
+                            <li><strong>Address:</strong> [StreetNumber] [StreetName]</li>
+                            <li><strong>City: </strong>[City]</li>
+                            <li><strong>Intersection: </strong>[Intersection]</li>
+                            <li><strong>Directions: </strong>[DrivingDirections]</li>
+                        </ul>
+                        </td>
+                        <td>
+                        <iframe width="100%" height="200" src={mapSrc}></iframe>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
                 
             </div>

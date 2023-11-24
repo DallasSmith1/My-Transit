@@ -24,7 +24,10 @@ async function search() {
     
                 let link = document.createElement("a");
                 link.className = "ag-courses-item_link";
-                link.href = `/stationdetails/${obj.Stations.Station[i].LocationCode}`;
+                link.href = `/stationdetails`;
+                link.onclick =  function () {
+                    GetDetails(obj);
+                }
 
                 let div2 = document.createElement("div");
                 div2.className = "ag-courses-item_bg";
@@ -71,6 +74,13 @@ async function search() {
 
 
     }
+}
+
+async function GetDetails(obj)
+{
+    let stop = obj.Stations.Station[i].LocationCode
+    localStorage.setItem("stopJSON", await invoke("get_stop_details", { stop }));
+    window.location.href = "./stationdetails";
 }
 
 function Stations()

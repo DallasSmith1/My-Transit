@@ -14,7 +14,8 @@
     "bootstrap": "^3.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^5.3.4"
+    "react-router-dom": "^5.3.4",
+    "react-simple-maps": "^3.0.0"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.5.6",
