@@ -7,8 +7,10 @@ function StationDetails()
 {
     let mapSrc = "https://maps.google.com/maps?q=43.8477020, -79.0415600&output=embed";
 
+    // parses the JSON string that was stored into local storage in the Stations.jsx page
     let obj = JSON.parse(localStorage.getItem("stopJSON"));
 
+    // replace "<h1>{obj}</h1>" with "<h1>{obj.Stop.StopName}</h1>" to test it
     return (
         <div>
             <br/>
@@ -30,7 +32,7 @@ function StationDetails()
                         </ul>
                         </td>
                         <td>
-                        <iframe width="100%" height="200" src={mapSrc}></iframe>
+                        <iframe width="100%" height="400" src={mapSrc}></iframe>
                         </td>
                     </tr>
                 </tbody>

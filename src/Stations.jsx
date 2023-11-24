@@ -76,6 +76,8 @@ async function search() {
     }
 }
 
+// async function alternative
+// runs the async api call, stores the json in local storage, then href's to the details page
 async function GetDetails(obj)
 {
     let stop = obj.Stations.Station[i].LocationCode

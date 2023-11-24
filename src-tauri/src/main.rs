@@ -12,7 +12,7 @@ async fn get_all_stops() -> Result<String, String> {
 }
 
 #[tauri::command]
-async fn get_stop_details(stop: String) -> Result<String, String> {
+async fn get_stop_details(stop: &str) -> Result<String, String> {
     let url = format!("http://api.openmetrolinx.com/OpenDataAPI/api/V1/Stop/Details/{}?key=30023794", stop);
     let response = reqwest::get(url).await.unwrap();
     let json_response = response.text().await.unwrap();
