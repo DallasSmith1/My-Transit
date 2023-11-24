@@ -1,40 +1,29 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
-use serde::Deserialize;
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 
+#[tauri::command]
+async fn get_all_stops() -> Result<String, String> {
+    let url = "http://api.openmetrolinx.com/OpenDataAPI/api/V1/Stop/All?key=30023794";
+    let response = reqwest::get(url).await.unwrap();
+    let json_response = response.text().await.unwrap();
 
-
-
-#[allow(dead_code)]
-#[derive(Deserialize, Debug)]
-#[serde(rename_all(deserialize = "PascalCase"))]
-struct StopsResponse {
-    #[serde(skip_deserializing)]
-    metadata: (),
-    stations: StationsWrapper
+    Ok(json_response)
 }
 
-#[allow(dead_code)]
-#[derive(Deserialize, Debug)]
-#[serde(rename_all(deserialize = "PascalCase"))]
-struct StationsWrapper {
-    station: Vec<Station>,
+#[tauri::command]
+async fn get_stop_details(stop: String) -> Result<String, String> {
+    let url = format!("http://api.openmetrolinx.com/OpenDataAPI/api/V1/Stop/Details/{stop}?key=30023794");
+    let response = reqwest::get(url).await.unwrap();
+    let json_response = response.text().await.unwrap();
+
+    Ok(json_response)
 }
 
-#[allow(dead_code)]
-#[derive(Deserialize, Debug)]
-#[serde(rename_all(deserialize = "PascalCase"))]
-struct Station {
-    location_code: String,
-    location_name: String,
-    location_type: String,
-    public_stop_id: String
-}
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![])
+        .invoke_handler(tauri::generate_handler![get_all_stops, get_stop_details])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

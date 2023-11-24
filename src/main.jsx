@@ -27,7 +27,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route exact path="/presets">
             <Presets />
           </Route>
-          <Route exact path="/stationdetails">
+          <Route exact path="/stationdetails/:id">
             <StationDetails />
           </Route>
         </Switch>

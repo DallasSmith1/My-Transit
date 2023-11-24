@@ -1,0 +1,42 @@
+body {
+    font-family: 'Arial', sans-serif;
+}
+
+h1 {
+    color: white;
+}
+
+address {
+    font-style: normal;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: left;
+}
+
+table {
+    width: 100%;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+.facilities {
+    background-color: darkgray;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.info {
+    background-color: darkgray;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
