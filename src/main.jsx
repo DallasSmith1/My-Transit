@@ -7,6 +7,7 @@ import Home from "./Home";
 import Schedule from "./Schedule";
 import Stations from "./Stations";
 import Presets from "./Presets";
+import StationDetails from "./StationDetails";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -26,8 +27,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route exact path="/presets">
             <Presets />
           </Route>
+          <Route exact path="/stationdetails">
+            <StationDetails />
+          </Route>
         </Switch>
       </div>
-      <BottomNav />
     </Router>
 );

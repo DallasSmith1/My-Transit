@@ -22,6 +22,24 @@ function Stations()
         </div>
 
         <div className="results" id="results">
+        <div class="ag-format-container">
+                <div class="ag-courses_item">
+                <a href="#" class="ag-courses-item_link">
+                    <div class="ag-courses-item_bg"></div>
+
+                    <div class="ag-courses-item_title">
+                    Ajax Go
+                    </div>
+
+                    <div class="ag-courses-item_date-box">
+                    Type:&ensp;
+                    <span class="ag-courses-item_date">
+                    <i class="fa-solid fa-train" style={{color: "white"}}></i>&ensp;<i class="fa-solid fa-bus" style={{color: "white"}}></i>
+                    </span>
+                    </div>
+                </a>
+            </div>
+            </div>
         </div>
     </div>
     );
