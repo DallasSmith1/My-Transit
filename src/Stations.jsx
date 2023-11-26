@@ -17,16 +17,20 @@ async function search() {
 
         for (var i = 0; i < obj.Stations.Station.length; i++ )
         {
-            if (obj.Stations.Station[i].LocationName.toLowerCase().includes(search.toLowerCase()))
+            if (obj.Stations.Station[i].LocationName.toLowerCase().includes(search.toLowerCase()) || obj.Stations.Station[i].LocationCode.toLowerCase().includes(search.toLowerCase()))
             {
+                
+
                 let div1 = document.createElement("div");
                 div1.className = "ag-courses_item";
     
+                let code = obj.Stations.Station[i].LocationCode
+
                 let link = document.createElement("a");
                 link.className = "ag-courses-item_link";
-                link.href = `/stationdetails`;
+                //link.href = `/stationdetails`;
                 link.onclick =  function () {
-                    GetDetails(obj);
+                    GetDetails(code);
                 }
 
                 let div2 = document.createElement("div");
@@ -78,11 +82,15 @@ async function search() {
 
 // async function alternative
 // runs the async api call, stores the json in local storage, then href's to the details page
-async function GetDetails(obj)
+async function GetDetails(code)
 {
-    let stop = obj.Stations.Station[i].LocationCode
-    localStorage.setItem("stopJSON", await invoke("get_stop_details", { stop }));
-    window.location.href = "./stationdetails";
+    document.cookie = "pass=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    let out = await invoke("get_stop_details", { stop: code })
+    let string = JSON.stringify(out);
+    let params = new URLSearchParams();
+    params.append("JSON", string);
+    document.cookie = "pass="+params.toString();
+    window.location.href = `./stationdetails`;
 }
 
 function Stations()

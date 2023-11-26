@@ -5,18 +5,31 @@ import { invoke } from "@tauri-apps/api/tauri";
 
 function StationDetails()
 {
-    let mapSrc = "https://maps.google.com/maps?q=43.8477020, -79.0415600&output=embed";
-
-    // parses the JSON string that was stored into local storage in the Stations.jsx page
-    let obj = JSON.parse(localStorage.getItem("stopJSON"));
-
+    // parses the JSON string that was stored into local storage in the Stations.jsx
+    let passvars = document.cookie.split("; ").find(row => row.startsWith("pass"));
+    passvars = passvars.replace("pass=","");
+    let params = new URLSearchParams(passvars);
+    let json = params.get("JSON");
+    let obj = JSON.parse(json);
+    let object = JSON.parse(obj)
+    
+    // const { json } = useParams();
+    // let obj = JSON.parse(json);
     // replace "<h1>{obj}</h1>" with "<h1>{obj.Stop.StopName}</h1>" to test it
+    
+    let mapSrc = "https://maps.google.com/maps?q="+object.Stop.Place.Latitude+", "+object.Stop.Place.Longitude+"&output=embed";
     return (
         <div>
             <br/>
-            <h1>{obj}</h1>
+            <div style={{alignContent: 'left'}}>
+            <button className="button">
+                <span className="button-text">Back</span>
+                <div className="fill-container"></div>
+            </button>
+            </div>
+            <h1>{object.Stop.StopName}</h1>
             <address>
-                <strong>Code:</strong>
+                <strong>Code: {object.Stop.Code}</strong>
             </address>
 
             <div className="facilities">
@@ -25,10 +38,10 @@ function StationDetails()
                     <tr>
                         <td>
                         <ul>
-                            <li><strong>Address:</strong> [StreetNumber] [StreetName]</li>
-                            <li><strong>City: </strong>[City]</li>
-                            <li><strong>Intersection: </strong>[Intersection]</li>
-                            <li><strong>Directions: </strong>[DrivingDirections]</li>
+                            <li><strong>Address:</strong> {object.Stop.StreetNumber} {object.Stop.StreetName}</li>
+                            <li><strong>City: </strong>{object.Stop.City}</li>
+                            <li><strong>Intersection: </strong>{object.Stop.Intersection}</li>
+                            <li><strong>Directions: </strong>{object.Stop.DrivingDirections}</li>
                         </ul>
                         </td>
                         <td>
