@@ -1,62 +1,158 @@
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-import { useState } from "react";
 import "./StationDetails.css";
-import { invoke } from "@tauri-apps/api/tauri";
+import { useHistory } from "react-router-dom";
 
-function StationDetails()
+function StationDetails({json})
 {
-    // parses the JSON string that was stored into local storage in the Stations.jsx
-    let passvars = document.cookie.split("; ").find(row => row.startsWith("pass"));
-    passvars = passvars.replace("pass=","");
-    let params = new URLSearchParams(passvars);
-    let json = params.get("JSON");
+    const navigate = useHistory();
     let obj = JSON.parse(json);
-    let object = JSON.parse(obj)
-    
-    // const { json } = useParams();
-    // let obj = JSON.parse(json);
-    // replace "<h1>{obj}</h1>" with "<h1>{obj.Stop.StopName}</h1>" to test it
-    
-    let mapSrc = "https://maps.google.com/maps?q="+object.Stop.Place.Latitude+", "+object.Stop.Place.Longitude+"&output=embed";
+
+    function Type()
+    {
+        if (obj.Stop.IsBus && obj.Stop.IsTrain)
+        {
+            return (<><strong><i class="fa-solid fa-train"></i> <i class="fa-solid fa-bus"></i></strong></>);
+        }
+        else if (obj.Stop.IsBus)
+        {
+            return (<strong><i class="fa-solid fa-bus"></i></strong>);
+        }
+        else if (obj.Stop.IsTrain) {
+            return (<strong><i class="fa-solid fa-train"></i></strong>);
+        }
+    }
+
+    function Map()
+    {
+        let mapSrc = "https://maps.google.com/maps?q="+obj.Stop.Latitude+", "+obj.Stop.Longitude+"&output=embed";
+        return (
+            <iframe width="100%" height="400" src={mapSrc}></iframe>
+        )
+    }
+
+    function Location() {
+        return (
+            <ul>
+                <li><strong>City: </strong>{obj.Stop.City}</li>
+                <li><strong>Address:</strong> {obj.Stop.StreetNumber} {obj.Stop.StreetName}</li>
+                <li><strong>Intersection: </strong>{obj.Stop.Intersection}</li>
+            </ul>
+        );
+    }
+
+    function TicketSales()
+    {
+        if (obj.Stop.TicketSales != "" && obj.Stop.TicketSales != null)
+        {
+            let dates = obj.Stop.TicketSales;
+            return (<><br/><strong><i class="fa-solid fa-ticket"></i> Ticket Sale Hours:</strong><p>{dates}</p></>);
+        }
+    }
+
+    function BoardingInfo()
+    {
+        if (obj.Stop.BoardingInfo != "" && obj.Stop.BoardingInfo != null)
+        {
+            let boarding = obj.Stop.BoardingInfo;
+            boarding = boarding.replace("\tBus Platforms:\n", "");
+            boarding = boarding.replace("\n", "\n\n");
+            return (<><br/><strong><i class="fa-solid fa-bus"></i> Boarding Information:</strong><p>{boarding}</p></>);
+        }
+    }
+
+    function AdditionalInformation()
+    {
+        if (obj.Stop.Facilities.length > 0 || obj.Stop.Parkings.length > 0)
+        {
+            return (
+                <table>
+                    <tbody>
+                        <td>
+                            <Facilities/>
+                        </td>
+                        <td>
+                            <Parking />
+                        </td>
+                    </tbody>
+                </table>
+            )
+        }
+    }
+
+    function Facilities()
+    {
+        if (obj.Stop.Facilities.length > 0)
+        {
+            let list = "";
+            for (let i = 0; i < obj.Stop.Facilities.length; i++)
+            {
+                list += obj.Stop.Facilities[i].Description + "\n";
+            }
+            return (
+                <div className="info">
+                    <h2 style={{textAlign: "center"}}>Facilities</h2>
+                    <p style={{textAlign: "center"}}>{list}</p>
+                </div>
+            )
+        }
+    }
+
+    function Parking()
+    {
+        if (obj.Stop.Parkings.length > 0)
+        {
+            let list = "";
+            for (let i = 0; i < obj.Stop.Parkings.length; i++)
+            {
+                list += obj.Stop.Parkings[i].Name + ": " + obj.Stop.Parkings[i].ParkSpots + "\n";
+            }
+            return (
+                <div className="info">
+                    <h2 style={{textAlign: "center"}}><i class="fa-solid fa-square-parking"></i> Parking</h2>
+                    <p style={{textAlign: "center"}}>{list}</p>
+                </div>
+            )
+        }
+    }
+
+
     return (
         <div>
             <br/>
-            <div style={{alignContent: 'left'}}>
-            <button className="button">
-                <span className="button-text">Back</span>
-                <div className="fill-container"></div>
-            </button>
-            </div>
-            <h1>{object.Stop.StopName}</h1>
-            <address>
-                <strong>Code: {object.Stop.Code}</strong>
-            </address>
-
-            <div className="facilities">
             <table>
                 <tbody>
+                    <tr style={{textAlign: 'left'}}>
+                        <button onClick={function() {
+                            navigate.push("./stations");
+                        }}>
+                            <i className="fa-solid fa-chevron-left"></i> Back
+                        </button>
+                    </tr>
                     <tr>
-                        <td>
-                        <ul>
-                            <li><strong>Address:</strong> {object.Stop.StreetNumber} {object.Stop.StreetName}</li>
-                            <li><strong>City: </strong>{object.Stop.City}</li>
-                            <li><strong>Intersection: </strong>{object.Stop.Intersection}</li>
-                            <li><strong>Directions: </strong>{object.Stop.DrivingDirections}</li>
-                        </ul>
-                        </td>
-                        <td>
-                        <iframe width="100%" height="400" src={mapSrc}></iframe>
-                        </td>
+                        <h1>{obj.Stop.StopName}</h1>
+                        <address>
+                            <Type />
+                        </address>
+
+                        <div className="facilities">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <Location />
+                                            <TicketSales />
+                                            <BoardingInfo />
+                                        </td>
+                                        <td style={{width: "50%"}}>
+                                            <Map/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <AdditionalInformation />
                     </tr>
                 </tbody>
             </table>
-                
-            </div>
-
-            <div className="info">
-                <h2>Additional Information</h2>
-                <p>This train station serves as a major transportation hub connecting various destinations. It provides a range of facilities and services to ensure a comfortable travel experience for passengers.</p>
-            </div>
         </div>
     );
 }

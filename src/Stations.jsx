@@ -1,100 +1,97 @@
 import "./Stations.css";
-import {Link} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { invoke } from "@tauri-apps/api/tauri";
-
-async function search() {
-    if (document.getElementById('searchInput') != null)
-    {
-        let search = document.getElementById('searchInput').value;
-
-        let data = await invoke("get_all_stops");
-
-        let obj = JSON.parse(data);
-
-        let results =  document.getElementById("display-items");
-
-        results.innerHTML = "";
-
-        for (var i = 0; i < obj.Stations.Station.length; i++ )
-        {
-            if (obj.Stations.Station[i].LocationName.toLowerCase().includes(search.toLowerCase()) || obj.Stations.Station[i].LocationCode.toLowerCase().includes(search.toLowerCase()))
-            {
-                
-
-                let div1 = document.createElement("div");
-                div1.className = "ag-courses_item";
-    
-                let code = obj.Stations.Station[i].LocationCode
-
-                let link = document.createElement("a");
-                link.className = "ag-courses-item_link";
-                //link.href = `/stationdetails`;
-                link.onclick =  function () {
-                    GetDetails(code);
-                }
-
-                let div2 = document.createElement("div");
-                div2.className = "ag-courses-item_bg";
-
-                let div3 = document.createElement("div");
-                div3.className = "ag-courses-item_title";
-                div3.innerText = obj.Stations.Station[i].LocationName;
-
-                let div4 = document.createElement("div");
-                div4.className = "ag-courses-item_date-box";
-                div4.innerText = "Type:";
-
-                let span = document.createElement("span");
-                span.className = "ag-courses-item_date";
-                span.style = "color: white";
-
-                if (obj.Stations.Station[i].LocationType == "Train Station")
-                {
-                    span.innerHTML = '&ensp;<i class="fa-solid fa-train"></i>';
-                }
-                else if (obj.Stations.Station[i].LocationType == "Bus Stop" || obj.Stations.Station[i].LocationType == "Bus Terminal")
-                {
-                    span.innerHTML = '&ensp;<i class="fa-solid fa-bus"></i>';
-                }
-                else if (obj.Stations.Station[i].LocationType == "Park & Ride")
-                {
-                    span.innerHTML = '&ensp;<i class="fa-solid fa-square-parking"></i>';
-                }
-                else if (obj.Stations.Station[i].LocationType == "Train & Bus Station")
-                {
-                    span.innerHTML = '&ensp;<i class="fa-solid fa-train"></i>&ensp;<i class="fa-solid fa-bus"></i>';
-                }
-
-                div4.appendChild(span);
-                link.appendChild(div2);
-                link.appendChild(div3);
-                link.appendChild(div4);
-                div1.appendChild(link);
-                results.appendChild(div1);
-            }
-
-
-        }
-
-
-    }
-}
 
 // async function alternative
 // runs the async api call, stores the json in local storage, then href's to the details page
-async function GetDetails(code)
+function Stations({setJSON})
 {
-    document.cookie = "pass=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    let out = await invoke("get_stop_details", { stop: code })
-    let string = JSON.stringify(out);
-    let params = new URLSearchParams();
-    params.append("JSON", string);
-    document.cookie = "pass="+params.toString();
-    window.location.href = `./stationdetails`;
-}
+    const navigate = useHistory();
 
-function Stations()
-{
+    async function search() {
+        if (document.getElementById('searchInput') != null)
+        {
+            let search = document.getElementById('searchInput').value;
+    
+            let data = await invoke("get_all_stops");
+    
+            let obj = JSON.parse(data);
+    
+            let results =  document.getElementById("display-items");
+    
+            results.innerHTML = "";
+    
+            for (var i = 0; i < obj.Stations.Station.length; i++ )
+            {
+                if (obj.Stations.Station[i].LocationName.toLowerCase().includes(search.toLowerCase()) || obj.Stations.Station[i].LocationCode.toLowerCase().includes(search.toLowerCase()))
+                {
+                    
+    
+                    let div1 = document.createElement("div");
+                    div1.className = "ag-courses_item";
+        
+                    let code = obj.Stations.Station[i].LocationCode
+    
+                    let link = document.createElement("a");
+                    link.className = "ag-courses-item_link";
+                    link.onclick =  function () {
+                        GetDetails(code);
+                    }
+    
+                    let div2 = document.createElement("div");
+                    div2.className = "ag-courses-item_bg";
+    
+                    let div3 = document.createElement("div");
+                    div3.className = "ag-courses-item_title";
+                    div3.innerText = obj.Stations.Station[i].LocationName;
+    
+                    let div4 = document.createElement("div");
+                    div4.className = "ag-courses-item_date-box";
+                    div4.innerText = "Type:";
+    
+                    let span = document.createElement("span");
+                    span.className = "ag-courses-item_date";
+                    span.style = "color: white";
+    
+                    if (obj.Stations.Station[i].LocationType == "Train Station")
+                    {
+                        span.innerHTML = '&ensp;<i class="fa-solid fa-train"></i>';
+                    }
+                    else if (obj.Stations.Station[i].LocationType == "Bus Stop" || obj.Stations.Station[i].LocationType == "Bus Terminal")
+                    {
+                        span.innerHTML = '&ensp;<i class="fa-solid fa-bus"></i>';
+                    }
+                    else if (obj.Stations.Station[i].LocationType == "Park & Ride")
+                    {
+                        span.innerHTML = '&ensp;<i class="fa-solid fa-square-parking"></i>';
+                    }
+                    else if (obj.Stations.Station[i].LocationType == "Train & Bus Station")
+                    {
+                        span.innerHTML = '&ensp;<i class="fa-solid fa-train"></i>&ensp;<i class="fa-solid fa-bus"></i>';
+                    }
+    
+                    div4.appendChild(span);
+                    link.appendChild(div2);
+                    link.appendChild(div3);
+                    link.appendChild(div4);
+                    div1.appendChild(link);
+                    results.appendChild(div1);
+                }
+    
+    
+            }
+    
+    
+        }
+    }
+
+    async function GetDetails(code)
+    {
+        let out = await invoke("get_stop_details", { stop: code })
+        setJSON(out);
+        navigate.push('/stationdetails');
+    }
+
     return (
     <div className="container">
         <h1>Station Search</h1>
