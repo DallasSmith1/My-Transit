@@ -122,7 +122,7 @@ function StationDetails({json})
                 <tbody>
                     <tr style={{textAlign: 'left'}}>
                         <button onClick={function() {
-                            navigate.push("./stations");
+                            navigate.goBack();
                         }}>
                             <i className="fa-solid fa-chevron-left"></i> Back
                         </button>

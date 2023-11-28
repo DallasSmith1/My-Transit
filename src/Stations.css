@@ -120,7 +120,7 @@ transition: color .5s ease
 }
 .ag-courses-item_bg {
 height: 150px;
-width: 150px;
+width: 200px;
 background-color: #3ecd5e;
 
 z-index: 1;
