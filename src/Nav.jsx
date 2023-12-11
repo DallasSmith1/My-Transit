@@ -18,7 +18,7 @@ function Nav() {
                 <Link className="nav-link" to="/stations">Stations</Link>
             </li>
             <li className="nav-item">
-                <Link className="nav-link" to="/presets">Preset</Link>
+                <Link className="nav-link" to="/presets">Saved Trips</Link>
             </li>
             </ul>
         </div>

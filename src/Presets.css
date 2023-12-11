@@ -1,0 +1,258 @@
+body {
+    font-family: 'Arial', sans-serif;
+	overflow-y: hidden;
+}
+
+h1 {
+    color: white;
+}
+
+p{
+    text-align: left;
+    white-space: pre-wrap;
+}
+
+@media (min-width: 50em) {
+	h2 {
+		font-size: 1.8rem;
+	}
+}
+
+.presets {
+	max-height: 90vh;
+	overflow-y:auto;
+}
+
+table {
+	width: 100vw;
+}
+
+.td-preset{
+	width: 20vw;
+}
+
+.thirdy {
+	width: 30%;
+	padding-top: 5%;
+	padding-bottom: 5%;
+}
+
+.cta {
+	display: flex;
+	flex-wrap: wrap;
+	background: rgba(0, 0, 0, 0.425);
+	max-width: 50rem;
+	width: 100%;
+	box-shadow: 0.65rem 0.65rem 0 hsl(var(--shadowColor) / 1);
+	border-radius: 0.8rem;
+	overflow: hidden;
+	border: 0.5rem solid;
+	margin-top: 5px;
+}
+
+.cta_select {
+	display: flex;
+	flex-wrap: wrap;
+	background: green;
+	max-width: 50rem;
+	width: 100%;
+	box-shadow: 0.65rem 0.65rem 0 hsl(var(--shadowColor) / 1);
+	border-radius: 0.8rem;
+	overflow: hidden;
+	border: 0.5rem solid;
+	margin-top: 5px;
+}
+
+.cta img {
+	aspect-ratio: 3 / 2;
+	object-fit: cover;
+	flex: 1 1 300px;
+	outline: 0.5rem solid;
+}
+
+.cta__text-column {
+	padding: min(2rem, 5vw) min(2rem, 5vw) min(2.5rem, 5vw);
+	flex: 1 0 50%;
+}
+
+.cta__text-column > * + * {
+	margin: min(1.5rem, 2.5vw) 0 0 0;
+}
+
+.cta a {
+	display: inline-block;
+	color: black;
+	padding: 0.5rem 1rem;
+	text-decoration: none;
+	background: black;
+	border-radius: 0.6rem;
+	font-weight: 700;
+	border: 0.35rem solid;
+	cursor: pointer;
+	margin-left: 5px;
+}
+
+.cta_select a {
+	display: inline-block;
+	color: black;
+	padding: 0.5rem 1rem;
+	text-decoration: none;
+	background: black;
+	border-radius: 0.6rem;
+	font-weight: 700;
+	border: 0.35rem solid;
+	cursor: pointer;
+}
+
+
+
+.boarding-pass {
+	width: 400px;
+	height: 400px;
+	background: #fff;
+	border-radius: 12px;
+	box-shadow: 0 5px 30px rgba(0, 0, 0, .2);
+	overflow: hidden;
+	text-transform: uppercase;
+  
+	small {
+	  display: block;
+	  font-size: 12px;
+	  color: #A2A9B3;
+	  margin-bottom: 2px;
+	}
+  
+	strong {
+	  font-size: 30px;
+	  display: block;
+	}
+  
+	/*--------------------
+	Header
+	--------------------*/
+	& header {
+	  background: green;
+	  padding: 12px 20px;
+	  height: 53px;
+  
+	  .flight {
+		text-align: center;
+		color: #fff;
+  
+		strong {
+		  font-size: 25px;
+		}
+  
+	  }
+	}
+  
+	/*--------------------
+	Cities
+	--------------------*/
+	.cities {
+	  position: relative;
+	  color: black;
+	  &::after {
+		content: '';
+		display: table;
+		clear: both;
+	  }
+	}
+  
+	
+	/*--------------------
+	Infos
+	--------------------*/
+	.infos {
+	  display: flex;
+	  border-top: 1px solid #99D298;
+  
+	  .places,
+	  .times {
+		width: 50%;
+		padding: 10px 0;
+  
+		&::after {
+		  content: '';
+		  display: table;
+		  clear: both;
+		}
+	  }
+	  
+	  .times {
+		
+		strong {
+		  transform: scale(0.9);
+		  transform-origin: left bottom;
+		}
+	  }
+  
+	  .places {
+		background: #ECECEC;
+		border-right: 1px solid #99D298;
+		
+		small {
+		  color: #97A1AD;
+		}
+  
+		strong {
+		  color: #239422;
+		}
+	  }
+  
+	  .box {
+		padding: 10px 20px 10px;
+		width: 47%;
+		float: left;
+  
+		small {
+		  font-size: 10px;
+		}
+	  }
+	}
+  
+	
+	/*--------------------
+	Strap
+	--------------------*/
+	.strap {
+	  clear: both;
+	  position: relative;
+	  border-top: 1px solid #99D298;
+  
+	  &::after {
+		content: '';
+		display: table;
+		clear: both;
+	  }
+  
+	  .box {
+		padding: 23px 0 20px 20px;
+  
+		& div {
+		  margin-bottom: 15px;
+		  
+		  small {
+			font-size: 10px;
+		  }
+  
+		  strong {
+			font-size: 13px;
+		  }
+		}
+  
+		sup {
+		  font-size: 8px;
+		  position: relative;
+		  top: -5px;
+		}
+	  }
+	  .qrcode {
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		width: 80px;
+		height: 80px;
+	  }
+	}
+  }
