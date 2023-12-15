@@ -11,6 +11,32 @@ p{
     white-space: pre-wrap;
 }
 
+.bigTD {
+  font-size: xx-large;
+}
+
+.bigTDl {
+  font-size: xx-large;
+  text-align: left;
+}
+
+.bigTDr {
+  font-size: xx-large;
+  text-align: right;
+}
+
+.headerl {
+  text-align: left;
+}
+.headerr {
+  text-align: right;
+}
+
+.details {
+    max-height: 70svh;
+    overflow-y: auto;
+}
+
 .primary {
     font-size: xx-large;
     white-space: pre-wrap;
@@ -27,8 +53,8 @@ ul {
     text-align: left;
 }
 
-table {
-    width: 100%;
+.triptable {
+    width: 65vw;
 }
 
 tr {
@@ -49,7 +75,6 @@ li {
 
 .info {
     background-color: darkgray;
-    padding: 15px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
@@ -90,50 +115,10 @@ button {
     visibility: visible;
     opacity: 1;
   }
-  
-  .popup {
-    margin: 70px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 5px;
-    width: 30%;
-    position: relative;
-    transition: all 2s ease-in-out;
-  }
-  
-  .popup h2 {
-    margin-top: 0;
-    color: #333;
-    font-family: Tahoma, Arial, sans-serif;
-  }
-  .popup .close {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    transition: all 200ms;
-    font-size: 30px;
-    font-weight: bold;
-    text-decoration: none;
-    color: #333;
-  }
-  .popup .close:hover {
-    color: #06D85F;
-  }
-  .popup .content {
-    max-height: 30%;
-    overflow: auto;
-    color: black;
-  }
-  
-  @media screen and (max-width: 700px){
-    .box{
-      width: 70%;
-    }
-    .popup{
-      width: 70%;
-    }
-  }
 
 a {
     color: white;
+}
+a:hover{
+  color: greenyellow;
 }

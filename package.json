@@ -11,12 +11,14 @@
   },
   "dependencies": {
     "@tauri-apps/api": "^1.5.1",
+    "@tauri-apps/plugin-sql": "^2.0.0-alpha.4",
     "bootstrap": "^3.4.1",
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^5.3.4",
-    "react-simple-maps": "^3.0.0"
+    "react-simple-maps": "^3.0.0",
+    "sqlite": "^5.1.1"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.5.6",

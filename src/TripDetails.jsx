@@ -10,18 +10,28 @@ function TripDetails({json})
     let destination = json.Trips.Trip[(json.Trips.Trip.length)-1].Stops.Stop[json.Trips.Trip[(json.Trips.Trip.length)-1].Stops.Stop.length-1].Code;
 
     let time = json.Duration.split(':');
+
+    invoke("get_stop_details", {stop: json.Trips.Trip[0].Stops.Stop[0].Code}).then((stopDetails) => {
+        let details = JSON.parse(stopDetails);
+
+        let map = document.getElementById("map");
+        map.innerHTML = "<p class='title'>"+details.Stop.StopName+"</p><iframe width='100%' height='600' src='https://maps.google.com/maps?q="+details.Stop.Latitude+","+details.Stop.Longitude+"&output=embed'></iframe>";
+
+        let dest = document.getElementById("departure");
+        dest.innerHTML = details.Stop.StopName + " | " + details.Stop.Code;
+
+        let start = document.getElementById(details.Stop.Code);
+        start.innerHTML = details.Stop.StopName;
+    });
     
     async function GetStationDetails(code)
     {
         let out = await invoke("get_stop_details", { stop: code });
         
         let obj = JSON.parse(out);
-        
-        let title = document.getElementById("popupLocation");
-        title.innerText = obj.Stop.StopName;
 
         let map = document.getElementById("map");
-        map.src = "https://maps.google.com/maps?q="+obj.Stop.Latitude+", "+obj.Stop.Longitude+"&output=embed";
+        map.innerHTML = "<p class='title'>"+obj.Stop.StopName+"</p><iframe width='100%' height='600' src='https://maps.google.com/maps?q="+obj.Stop.Latitude+","+obj.Stop.Longitude+"&output=embed'></iframe>";
         
         let content = document.getElementById("popupDetails");
         content.innerHTML = '';
@@ -32,7 +42,7 @@ function TripDetails({json})
         let departure = json.Trips.Trip[0].Stops.Stop[0].Code;
 
         return (
-            <h1><a href="#popup1" onClick={() => GetStationDetails(departure)}>{departure}</a> <i className="fa-solid fa-right-long"></i> <a href="#popup1" onClick={GetStationDetails(destination)}>{destination}</a></h1>
+            <h1><a href="#popup1" id="departure" onClick={() => GetStationDetails(departure)}>{departure}</a> <i className="fa-solid fa-right-long"></i> <a href="#popup1"  id="destination" onClick={() => GetStationDetails(destination)}>{destination}</a></h1>
         );
     }
 
@@ -104,13 +114,22 @@ function TripDetails({json})
 
         function ArriveIcon({code, last, time, Type})
         {
+            invoke("get_stop_details", {stop: code}).then((stopDetails) => {
+                let details = JSON.parse(stopDetails);
+        
+                let dest = document.getElementById("destination");
+                dest.innerHTML = details.Stop.StopName + " | " + details.Stop.Code;
+        
+                let start = document.getElementById(details.Stop.Code+"stop");
+                start.innerHTML = details.Stop.StopName;
+            });
             if (last)
             {
-                return <p className="primary"><i class="fa-solid fa-location-dot"></i> <a href="#popup1" onClick={() => GetStationDetails(code)}>{code}</a> - Arrived - {time}</p>
+                return <><hr/><table><tbody><td className="bigTDl"><i class="fa-solid fa-location-dot"></i> Arrived</td><td className="bigTD"><i class="fa-solid fa-map-pin"></i> <a href="#popup1" id={code+"stop"} onClick={() => GetStationDetails(code)}>{code}</a></td><td className="bigTDr">{time}</td></tbody></table></>
             }
             else
             {
-                return <p className="primary"><i class="fa-solid fa-person-walking-dashed-line-arrow-right"></i> <a href="#popup1" onClick={() => GetStationDetails(code)}>{code}</a> - Exit <TransitName type={Type}/> - {time}</p>
+                return <><hr/><table><tbody><td className="bigTDl"><i class="fa-solid fa-location-dot"></i> Exit <TransitName type={Type}/></td><td className="bigTD"><i class="fa-solid fa-map-pin"></i> <a href="#popup1" id={code+"stop"} onClick={() => GetStationDetails(code)}>{code}</a></td><td className="bigTDr">{time}</td></tbody></table></>
             }
         }
 
@@ -138,10 +157,17 @@ function TripDetails({json})
             } 
         }
 
+        invoke("get_stop_details", {stop: trip.Stops.Stop[0].Code}).then((stopDetails) => {
+            let details = JSON.parse(stopDetails);
+     
+            let start = document.getElementById(details.Stop.Code);
+            start.innerHTML = details.Stop.StopName;
+        });
+
         return (
             <div className="trips">
                 <p className="secondary">Line: {trip.Line} - {trip.Direction}</p>
-                <p className="primary"><TransitIcon type={trip.Type}/> <a href="#popup1" onClick={() => GetStationDetails(trip.Stops.Stop[0].Code)}>{trip.Stops.Stop[0].Code}</a> - Board <TransitName type={trip.Type}/> - {moment(trip.Stops.Stop[0].Time, 'hh:mm a').format('hh:mm a')}</p>
+                <table><tbody><td className="bigTDl"><TransitIcon type={trip.Type}/> Board <TransitName type={trip.Type}/></td><td className="bigTD"> <i class="fa-solid fa-map-pin"></i> <a href="#popup1" id={trip.Stops.Stop[0].Code} onClick={() => GetStationDetails(trip.Stops.Stop[0].Code)}>{trip.Stops.Stop[0].Code}</a></td><td className="bigTDr">{moment(trip.Stops.Stop[0].Time, 'hh:mm a').format('hh:mm a')}</td></tbody></table><hr/>
                 {stops.map(function(obj) {
                 return (
                     <StopDetails stop={obj}/>
@@ -153,9 +179,15 @@ function TripDetails({json})
     }
 
     function StopDetails({stop})
-    {
+    {   
+        invoke("get_stop_details", {stop: stop.Code}).then((stopDetails) => {
+            let details = JSON.parse(stopDetails);
+  
+            let start = document.getElementById(details.Stop.Code);
+            start.innerHTML = details.Stop.StopName + " | " + details.Stop.Code;
+        });
         return (
-            <p className="secondary"><i className="fa-solid fa-stop"></i> <a href="#popup1" onClick={() => GetStationDetails(stop.Code)}>{stop.Code}</a> - {moment(stop.Time, 'hh:mm a').format('hh:mm a')}</p>
+            <p className="secondary"><i class="fa-solid fa-map-pin"></i> <a  id={stop.Code} href="#popup1" onClick={() => GetStationDetails(stop.Code)}>{stop.Code}</a> - {moment(stop.Time, 'hh:mm a').format('hh:mm a')}</p>
         )
     }
 
@@ -201,45 +233,53 @@ function TripDetails({json})
 
     return (
         <div>
-            <br/>
-            <table>
+            <table className="triptable">
                 <tbody>
-                    <tr style={{textAlign: 'left'}}>
-                        <button onClick={function() {
-                            navigate.push('/schedule');
-                        }}>
-                            <i className="fa-solid fa-chevron-left"></i> Back
-                        </button>
+                    <tr>
+                        <td className="headerl">
+                            <button onClick={function() {
+                                navigate.push('/schedule');
+                            }}>
+                                <i className="fa-solid fa-chevron-left"></i> Back
+                            </button>
+                        </td>
+                        <td className="headerr">
+                            <button onClick={function() {
+                                SavePreset();
+                                navigate.push('/presets');
+                            }}>
+                                <i className="fa-solid fa-bookmark"></i> Save Trip
+                            </button>
+                        </td>
                     </tr>
                     <tr>
-                        <Trip />
-                        <br/>
-                        <Duration />
-                        <br/>
+                        <td colSpan={2}>
+                            <Trip />
+                            <br/>
+                            <Duration />
+                            <br/>
+                        </td>
                     </tr>
                     <tr>
-                        <br/>
-                        <TripInfo />
-                    </tr>
-                    <tr>
-                        <button onClick={function() {
-                            SavePreset();
-                            navigate.push('/presets');
-                        }}>
-                            <i className="fa-solid fa-bookmark"></i> Save Trip
-                        </button>
+                        <td>
+                            <div className="details">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <br/>
+                                            <TripInfo />
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                        <td id="map">
+
+                        </td>
                     </tr>
                 </tbody>
             </table>
-            <div id="popup1" class="overlay">
-                <div class="popup">
-                    <h2 id="popupLocation"></h2>
-                    <a class="close" href="#">&times;</a>
-                    <iframe id="map" width="100%" height="400" src=""></iframe>
-                    <div class="content" id="popupDetails">
-                    </div>
-                </div>
-            </div>
+            
         </div>
     );
 }

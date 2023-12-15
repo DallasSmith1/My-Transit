@@ -48,8 +48,6 @@ function Schedule({setJSON})
 
             if (obj.SchJourneys.length > 0)
             {
-                let notif = document.getElementById("notification");
-                notif.innerHTML = "";
 
                 let counter = 0;
                 
@@ -131,10 +129,13 @@ function Schedule({setJSON})
             }
             else
             {
-                let notif = document.getElementById("notification");
-                notif.innerHTML = "Unable to find scheduled routes. Please try alternate times or stops.";
+                let notif = document.getElementById("display-items");
+                notif.innerHTML = "<p class='middle'>Unable to find scheduled routes. Please try alternate times or stops.</p>";
             }
         }
+
+        let loader = document.getElementById("loader");
+        loader.innerHTML = "";
     }
 
     invoke("get_all_stops").then((result) => {
@@ -161,7 +162,6 @@ function Schedule({setJSON})
 
     return (
         <div className="container" style={{alignItems: "center"}}>
-        <p id="notification"></p>
         <h1>Search Scheduled Trips</h1>
         <label>Date and Time of Departure:</label>
         <input type="datetime-local" id="time" name="time" style={{width: 250}}></input><br/>
@@ -177,7 +177,15 @@ function Schedule({setJSON})
             </datalist>
             <br/>
             <p id="error" className="error"></p>
-            <button onClick={search}><i className="fa-solid fa-magnifying-glass"></i> Search</button>
+            <button onClick={function() 
+                { 
+                    let loader = document.getElementById("loader");
+                    loader.innerHTML = "<div class='loader'></div>";
+
+                    let results = document.getElementById("display-items");
+                    results.innerHTML = "";
+                    search();
+                }}><i className="fa-solid fa-magnifying-glass"></i> Search</button>
             <br/>
             <br/>
             <div className="middle">
@@ -205,8 +213,11 @@ function Schedule({setJSON})
 
         </div>
         <div id="results">
-        <div className="ag-format-container-schedule" id="display-items">
-        </div>
+            <div id="loader" className="loader_position">
+                
+            </div>
+            <div className="ag-format-container-schedule" id="display-items">
+            </div>
         </div>
         </div>
     );

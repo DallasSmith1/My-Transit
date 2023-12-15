@@ -1,6 +1,5 @@
 body {
     font-family: 'Arial', sans-serif;
-	overflow-y: hidden;
 }
 
 h1 {
@@ -12,6 +11,11 @@ p{
     white-space: pre-wrap;
 }
 
+.title {
+	font-size: 3vh;
+	text-align: center;
+}
+
 @media (min-width: 50em) {
 	h2 {
 		font-size: 1.8rem;
@@ -19,16 +23,27 @@ p{
 }
 
 .presets {
-	max-height: 90vh;
+	height: 80vh;
 	overflow-y:auto;
 }
 
-table {
-	width: 100vw;
+.presettable {
+	width: 75vw;
 }
 
 .td-preset{
-	width: 20vw;
+	width: 0vw;
+}
+
+.td-preset-right{
+	width: 80vw;
+}
+
+.td-preset-middle{
+	width: 50vw;
+	border-style:dashed;
+	border-width: 2px;
+	border-color: black;
 }
 
 .thirdy {
@@ -184,6 +199,8 @@ table {
 		strong {
 		  transform: scale(0.9);
 		  transform-origin: left bottom;
+		  color: black;
+		  font-size: 25px;
 		}
 	  }
   
@@ -208,6 +225,7 @@ table {
 		small {
 		  font-size: 10px;
 		}
+		
 	  }
 	}
   
@@ -256,3 +274,8 @@ table {
 	  }
 	}
   }
+
+
+.smaller {
+	font-size: 20px;
+}
