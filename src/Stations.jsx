@@ -1,109 +1,139 @@
 import "./Stations.css";
 import { useHistory } from "react-router-dom";
 import { invoke } from "@tauri-apps/api/tauri";
+import { createElement } from "react";
 
 // async function alternative
 // runs the async api call, stores the json in local storage, then href's to the details page
-function Stations({setJSON})
+function Stations()
 {
-    const navigate = useHistory();
-
     async function search() {
         if (document.getElementById('searchInput') != null)
         {
-            let search = document.getElementById('searchInput').value;
-    
-            let data = await invoke("get_all_stops");
-    
-            let obj = JSON.parse(data);
-    
-            let results =  document.getElementById("display-items");
-    
-            results.innerHTML = "";
-    
-            for (var i = 0; i < obj.Stations.Station.length; i++ )
+            let stop = document.getElementById("searchInput");
+            let code = stop.value.split(" | ")[1];
+
+            let out = await invoke("get_stop_details", { stop: code })
+
+            let json = JSON.parse(out);
+
+            let result = document.getElementById("results");
+            result.innerHTML = "";
+
+            let hr = document.createElement("hr");
+            result.appendChild(hr);
+
+            let h1 = document.createElement("h1");
+            h1.innerHTML = json.Stop.StopName;
+
+            result.appendChild(h1);
+
+            let type = document.createElement("strong");
+            
+            if (json.Stop.IsBus && json.Stop.IsTrain)
             {
-                if (obj.Stations.Station[i].LocationName.toLowerCase().includes(search.toLowerCase()) || obj.Stations.Station[i].LocationCode.toLowerCase().includes(search.toLowerCase()))
-                {
-                    
-    
-                    let div1 = document.createElement("div");
-                    div1.className = "ag-courses_item";
-        
-                    let code = obj.Stations.Station[i].LocationCode
-    
-                    let link = document.createElement("a");
-                    link.className = "ag-courses-item_link";
-                    link.onclick =  function () {
-                        GetDetails(code);
-                    }
-    
-                    let div2 = document.createElement("div");
-                    div2.className = "ag-courses-item_bg";
-    
-                    let div3 = document.createElement("div");
-                    div3.className = "ag-courses-item_title";
-                    div3.innerText = obj.Stations.Station[i].LocationName;
-    
-                    let div4 = document.createElement("div");
-                    div4.className = "ag-courses-item_date-box";
-                    div4.innerText = "Type:";
-    
-                    let span = document.createElement("span");
-                    span.className = "ag-courses-item_date";
-                    span.style = "color: white";
-    
-                    if (obj.Stations.Station[i].LocationType == "Train Station")
-                    {
-                        span.innerHTML = '&ensp;<i class="fa-solid fa-train"></i>';
-                    }
-                    else if (obj.Stations.Station[i].LocationType == "Bus Stop" || obj.Stations.Station[i].LocationType == "Bus Terminal")
-                    {
-                        span.innerHTML = '&ensp;<i class="fa-solid fa-bus"></i>';
-                    }
-                    else if (obj.Stations.Station[i].LocationType == "Park & Ride")
-                    {
-                        span.innerHTML = '&ensp;<i class="fa-solid fa-square-parking"></i>';
-                    }
-                    else if (obj.Stations.Station[i].LocationType == "Train & Bus Station")
-                    {
-                        span.innerHTML = '&ensp;<i class="fa-solid fa-train"></i>&ensp;<i class="fa-solid fa-bus"></i>';
-                    }
-    
-                    div4.appendChild(span);
-                    link.appendChild(div2);
-                    link.appendChild(div3);
-                    link.appendChild(div4);
-                    div1.appendChild(link);
-                    results.appendChild(div1);
-                }
-    
-    
+                type.innerHTML = '<strong class="type"><i class="fa-solid fa-train"></i> <i class="fa-solid fa-bus"></i></strong>'
             }
-    
-    
+            else if (json.Stop.IsBus)
+            {
+                type.innerHTML = '<strong class="type"><i class="fa-solid fa-bus"></i></strong>';
+            }
+            else if (json.Stop.IsTrain) {
+                type.innerHTML = '<strong class="type"><i class="fa-solid fa-train"></i></strong>';
+            }
+
+            result.appendChild(type);
+
+            let div = document.createElement("div");
+            div.className = "facilities";
+            let table = document.createElement("table");
+            let body = document.createElement("tbody");
+            let tr = document.createElement("tr");
+            let td1 = document.createElement("td");
+            td1.innerHTML = "<ul><li><strong>City: </strong>"+json.Stop.City+"</li><li><strong>Address:</strong> "+json.Stop.StreetNumber+" "+json.Stop.StreetName+"</li><li><strong>Intersection: </strong>"+json.Stop.Intersection+"</li></ul>";
+            
+            if (json.Stop.TicketSales != "" && json.Stop.TicketSales != null)
+            {
+                let dates = json.Stop.TicketSales;
+                td1.innerHTML = td1.innerHTML + '<br/><strong><i class="fa-solid fa-ticket"></i> Ticket Sale Hours:</strong><p>'+dates+'</p>';
+            }
+            if (json.Stop.BoardingInfo != "" && json.Stop.BoardingInfo != null)
+            {
+                let boarding = json.Stop.BoardingInfo;
+                boarding = boarding.replace("\tBus Platforms:\n", "");
+                boarding = boarding.replace("\n", "\n\n");
+                td1.innerHTML = td1.innerHTML + '<br/><strong><i class="fa-solid fa-bus lightgreen"></i> Boarding Information:</strong><p>'+boarding+'</p>';
+            }
+
+            let td2 = document.createElement("td");
+            td2.innerHTML = '<iframe width="100%" height="400" src="https://maps.google.com/maps?q='+json.Stop.Latitude+', '+json.Stop.Longitude+'&output=embed"></iframe>';
+            td2.className = "map";
+
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            body.appendChild(tr);
+            table.appendChild(body);
+            div.appendChild(table);
+            result.appendChild(div);
+
+
+            let subtable = document.createElement("table");
+            let subbody = document.createElement("body");
+            let subtd1 = document.createElement("td");
+            if (json.Stop.Facilities.length > 0)
+            {
+                let list = "";
+                for (let i = 0; i < json.Stop.Facilities.length; i++)
+                {
+                    list += json.Stop.Facilities[i].Description + "\n";
+                }
+                subtd1.innerHTML = '<div class="info"><h2 class="middle">Facilities</h2><p class="middle">'+list+'</p></div>';
+            }
+            subbody.appendChild(subtd1);
+
+            let subtd2 = document.createElement("td");
+            if (json.Stop.Parkings.length > 0)
+            {
+                let list = "";
+                for (let i = 0; i < json.Stop.Parkings.length; i++)
+                {
+                    list += json.Stop.Parkings[i].Name + ": " + json.Stop.Parkings[i].ParkSpots + "\n";
+                }
+                    subtd2.innerHTML = '<div class="info"><h2 class="middle"><i class="fa-solid fa-square-parking"></i> Parking</h2><p class="middle">'+list+'</p></div>';
+            }
+            subbody.appendChild(subtd2);
+            subtable.appendChild(subbody);
+            result.appendChild(subtable);
         }
     }
 
-    async function GetDetails(code)
-    {
-        let out = await invoke("get_stop_details", { stop: code })
-        setJSON(out);
-        navigate.push('/stationdetails');
-    }
+    invoke("get_all_stops").then((result) => {
+        let json = JSON.parse(result);
+
+        let list1 = document.getElementById("stopList");
+
+        list1.innerHTML = "";
+
+        for (let i = 0; i < json.Stations.Station.length; i++)
+        {
+            let option1 = document.createElement("option");
+            option1.value = json.Stations.Station[i].LocationName + " | " + json.Stations.Station[i].LocationCode;
+            list1.appendChild(option1);
+        }
+    });
 
     return (
     <div className="container">
         <h1>Station Search</h1>
 
         <div className="search-container">
-            <input type="text" id="searchInput" placeholder="Search for destinations..."/>
-            <button onClick={search}><i className="fa-solid fa-magnifying-glass"></i> Search</button>
+            <input type="text" id="searchInput" placeholder="Search for destinations..." list="stopList"/>
+            <datalist id="stopList">
+            </datalist>
+            <button onClick={search}><i class="fa-solid fa-book-open"></i> Details</button>
         </div>
 
         <div className="results" id="results">
-        <div className="ag-format-container" id="display-items">
-        </div>
         </div>
     </div>
     );

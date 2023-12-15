@@ -11,18 +11,42 @@ p{
     white-space: pre-wrap;
 }
 
+.fa-map-pin{
+  color: darkred;
+}
+
+.fa-location-dot {
+  color: darkred;
+}
+
+.fa-person-walking-dashed-line-arrow-right{
+  color: black;
+}
+
+.lightgreen {
+  color: lightgreen;
+}
+
+table {
+  width: 100%;
+}
+
 .bigTD {
   font-size: xx-large;
+  text-align: center;
+  width: 33%;
 }
 
 .bigTDl {
   font-size: xx-large;
   text-align: left;
+  width: 33%;
 }
 
 .bigTDr {
   font-size: xx-large;
   text-align: right;
+  width: 33%;
 }
 
 .headerl {
@@ -35,6 +59,8 @@ p{
 .details {
     max-height: 70svh;
     overflow-y: auto;
+    overflow-x: hidden;
+    width: 41vw;
 }
 
 .primary {
@@ -49,12 +75,11 @@ p{
 
 ul {
     list-style-type: none;
-    padding: 0;
     text-align: left;
 }
 
-.triptable {
-    width: 65vw;
+.mapRight{
+    width: 50vw;
 }
 
 tr {
@@ -71,13 +96,7 @@ li {
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-top: 10px;
-}
-
-.info {
-    background-color: darkgray;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
+    width: 40vw;
 }
 
 button {
@@ -121,4 +140,8 @@ a {
 }
 a:hover{
   color: greenyellow;
+}
+
+.triptable{
+  width: 60vw;
 }

@@ -114,22 +114,28 @@ function TripDetails({json})
 
         function ArriveIcon({code, last, time, Type})
         {
-            invoke("get_stop_details", {stop: code}).then((stopDetails) => {
-                let details = JSON.parse(stopDetails);
-        
-                let dest = document.getElementById("destination");
-                dest.innerHTML = details.Stop.StopName + " | " + details.Stop.Code;
-        
-                let start = document.getElementById(details.Stop.Code+"stop");
-                start.innerHTML = details.Stop.StopName;
-            });
             if (last)
             {
+                invoke("get_stop_details", {stop: code}).then((stopDetails) => {
+                    let details = JSON.parse(stopDetails);
+            
+                    let dest = document.getElementById("destination");
+                    dest.innerHTML = details.Stop.StopName + " | " + details.Stop.Code;
+            
+                    let start = document.getElementById(details.Stop.Code+"stop");
+                    start.innerHTML = details.Stop.StopName;
+                });
                 return <><hr/><table><tbody><td className="bigTDl"><i class="fa-solid fa-location-dot"></i> Arrived</td><td className="bigTD"><i class="fa-solid fa-map-pin"></i> <a href="#popup1" id={code+"stop"} onClick={() => GetStationDetails(code)}>{code}</a></td><td className="bigTDr">{time}</td></tbody></table></>
             }
             else
             {
-                return <><hr/><table><tbody><td className="bigTDl"><i class="fa-solid fa-location-dot"></i> Exit <TransitName type={Type}/></td><td className="bigTD"><i class="fa-solid fa-map-pin"></i> <a href="#popup1" id={code+"stop"} onClick={() => GetStationDetails(code)}>{code}</a></td><td className="bigTDr">{time}</td></tbody></table></>
+                invoke("get_stop_details", {stop: code}).then((stopDetails) => {
+                    let details = JSON.parse(stopDetails);
+                      
+                    let start = document.getElementById(details.Stop.Code+"stop");
+                    start.innerHTML = details.Stop.StopName;
+                });
+                return <><hr/><table><tbody><td className="bigTDl"><i class="fa-solid fa-person-walking-dashed-line-arrow-right"></i> Exit <TransitName type={Type}/></td><td className="bigTD"><i class="fa-solid fa-map-pin"></i> <a href="#popup1" id={code+"stop"} onClick={() => GetStationDetails(code)}>{code}</a></td><td className="bigTDr">{time}</td></tbody></table></>
             }
         }
 
@@ -137,11 +143,11 @@ function TripDetails({json})
         {
             if (type == "B")
             {
-                return <i className="fa-solid fa-bus"></i>
+                return <i className="fa-solid fa-bus lightgreen"></i>
             }
             else
             {
-                return <i className="fa-solid fa-train"></i>
+                return <i className="fa-solid fa-train lightgreen"></i>
             } 
         }
 
@@ -166,7 +172,7 @@ function TripDetails({json})
 
         return (
             <div className="trips">
-                <p className="secondary">Line: {trip.Line} - {trip.Direction}</p>
+                <p className="secondary"><strong>Line:</strong> {trip.Line} - {trip.Direction}</p>
                 <table><tbody><td className="bigTDl"><TransitIcon type={trip.Type}/> Board <TransitName type={trip.Type}/></td><td className="bigTD"> <i class="fa-solid fa-map-pin"></i> <a href="#popup1" id={trip.Stops.Stop[0].Code} onClick={() => GetStationDetails(trip.Stops.Stop[0].Code)}>{trip.Stops.Stop[0].Code}</a></td><td className="bigTDr">{moment(trip.Stops.Stop[0].Time, 'hh:mm a').format('hh:mm a')}</td></tbody></table><hr/>
                 {stops.map(function(obj) {
                 return (
@@ -212,13 +218,26 @@ function TripDetails({json})
             }
             
 
+            invoke("get_stop_details", {stop: json.TransferLinks.Link[id].FromStopCode}).then((stopDetails) => {
+                let details = JSON.parse(stopDetails);
+        
+                let start = document.getElementById(details.Stop.Code+"transfer1");
+                start.innerHTML = details.Stop.StopName;
+            });
+            invoke("get_stop_details", {stop: json.TransferLinks.Link[id].FromStopCode}).then((stopDetails) => {
+                let details = JSON.parse(stopDetails);
+        
+                let start = document.getElementById(details.Stop.Code+"transfer2");
+                start.innerHTML = details.Stop.StopName;
+            });
+
             return (
                 <div className="trips">
                     <table>
                         <tbody>
                             <td><p className="secondary">TRANSFER</p></td>
-                            <td><p className="secondary">{json.TransferLinks.Link[id].FromStopCode} <i className="fa-solid fa-person-walking-arrow-right"></i> {json.TransferLinks.Link[id].ToStopCode}</p></td>
-                            <td><p className="secondary"><i className="fa-solid fa-stopwatch"></i> {out}</p></td>
+                            <td><p className="secondary" style={{textAlign: "center"}}><a id={json.TransferLinks.Link[id].FromStopCode + "transfer1"} href="#popup1" onClick={() => GetStationDetails(json.TransferLinks.Link[id].FromStopCode)}>{json.TransferLinks.Link[id].FromStopCode}</a> <i className="fa-solid fa-person-walking-arrow-right"></i> <a  id={json.TransferLinks.Link[id].ToStopCode + "transfer2"} href="#popup1" onClick={() => GetStationDetails(json.TransferLinks.Link[id].ToStopCode)}>{json.TransferLinks.Link[id].ToStopCode}</a></p></td>
+                            <td><p className="secondary" style={{textAlign: "right"}}><i className="fa-solid fa-stopwatch"></i> {out}</p></td>
                         </tbody>
                     </table>
                 </div>
@@ -266,16 +285,14 @@ function TripDetails({json})
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <br/>
                                             <TripInfo />
                                         </tr>
                                     </tbody>
                                 </table>
+                            <br/>
                             </div>
                         </td>
-                        <td id="map">
-
-                        </td>
+                        <td className="mapRight" id="map"></td>
                     </tr>
                 </tbody>
             </table>

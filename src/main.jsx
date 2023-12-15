@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./styles.css";
-import StationDetails from "./StationDetails";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
 import App from "./App";

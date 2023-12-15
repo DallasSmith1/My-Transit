@@ -8,12 +8,53 @@ body {
     color: white;   
 }
 
+.results {
+    text-align: center;
+    width: 50vw;
+}
+
+.facilities {
+    background-color: darkgray;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.info {
+    background-color: darkgray;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.fa-square-parking{
+    color: blue;
+}
+
+.fa-ticket {
+    color: gold;
+}
+
+.middle {
+    text-align: center;
+}
+
+.type {
+    font-size:xx-large;
+}
+
 .container {
     text-align: top;
 }
 
 .search-container {
     margin-bottom: 20px;
+}
+
+.map {
+    width: 45%;
 }
 
 input[type="text"] {
@@ -38,7 +79,7 @@ button:hover {
 }
 
 .results {
-    text-align: left;
+    text-align: center;
     align-items: center;
 }
 

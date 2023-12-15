@@ -3,8 +3,10 @@ import { useHistory } from "react-router-dom";
 import moment from "moment";
 import { invoke } from "@tauri-apps/api/tauri";
 
-function Presets()
+function Presets({setJSON})
 {
+    let currentJSON = "";
+    const navigate = useHistory();
     invoke("get_selected_presets").then((selected) => {
         invoke("get_all_presets").then((result) => {
             let files = result.split(":");
@@ -97,7 +99,7 @@ function Presets()
                     let hashed = presets[i] + "_";
                     invoke("get_presets", {hash: hashed}).then((retPreset) => {
                         let json = JSON.parse(retPreset);
-
+                        currentJSON = json;
                         let tripNumber = document.getElementById("tripNumber");
                         tripNumber.innerHTML = json.tripHash.replace("_","").replace("_","");
 
@@ -251,6 +253,13 @@ function Presets()
                             </section>
                             </div>
                     </div>
+                    <br/>
+                    <button onClick={function() {
+                        setJSON(currentJSON);
+                        navigate.push('/tripdetails');
+                    }}>
+                        <i class="fa-solid fa-book-open"></i> Show more
+                    </button>
                 </td>
                 <td className="td-preset-middle">
                     <p className="title">Saved Trips</p>

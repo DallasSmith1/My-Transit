@@ -4,7 +4,6 @@ import Home from "./Home";
 import Schedule from "./Schedule";
 import Stations from "./Stations";
 import Presets from "./Presets";
-import StationDetails from "./StationDetails";
 import TripDetails from "./TripDetails";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
@@ -26,13 +25,10 @@ function App()
                         <Schedule setJSON={setJSON} />
                     </Route>
                     <Route exact path="/stations">
-                        <Stations setJSON={setJSON}/>
+                        <Stations/>
                     </Route>
                     <Route exact path="/presets">
-                        <Presets />
-                    </Route>
-                    <Route exact path="/stationdetails">
-                        <StationDetails json={json}/>
+                        <Presets setJSON={setJSON}/>
                     </Route>
                     <Route exact path="/tripdetails">
                         <TripDetails json={json}/>

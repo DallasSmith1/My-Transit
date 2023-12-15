@@ -92,27 +92,29 @@ function Schedule({setJSON})
                         let newTBody = document.createElement('tbody');
     
                         let newLTD = document.createElement("td");
-    
+                        newLTD.className = "fifty";
                         
     
                         if (transitType.includes("B") && transitType.includes("T"))
                         {
-                            newLTD.innerHTML = '<i class="fa-solid fa-train"></i>+<i class="fa-solid fa-bus"></i> Depart: '+ fromCode[1] + " at " +moment(obj.SchJourneys[0].Services[i].Trips.Trip[0].Stops.Stop[0].Time, 'hh:mm a').format('hh:mm a');
+                            newLTD.innerHTML = '<i style="color:white" class="fa-solid fa-train"></i>+<i style="color:white" class="fa-solid fa-bus"></i> Depart: '+ fromCode[1] + " at " +moment(obj.SchJourneys[0].Services[i].Trips.Trip[0].Stops.Stop[0].Time, 'hh:mm a').format('hh:mm a');
                         }
                         else if (transitType.includes("B"))
                         {
-                            newLTD.innerHTML = '<i class="fa-solid fa-bus"></i> Depart: '+ fromCode[1] + " at " +moment(obj.SchJourneys[0].Services[i].Trips.Trip[0].Stops.Stop[0].Time, 'hh:mm a').format('hh:mm a');
+                            newLTD.innerHTML = '<i style="color:white" class="fa-solid fa-bus"></i> Depart: '+ fromCode[1] + " at " +moment(obj.SchJourneys[0].Services[i].Trips.Trip[0].Stops.Stop[0].Time, 'hh:mm a').format('hh:mm a');
                         }
                         else if (transitType.includes("T"))
                         {
-                            newLTD.innerHTML = '<i class="fa-solid fa-train"></i> Depart: '+ fromCode[1] + " at " +moment(obj.SchJourneys[0].Services[i].Trips.Trip[0].Stops.Stop[0].Time, 'hh:mm a').format('hh:mm a');
+                            newLTD.innerHTML = '<i style="color:white" class="fa-solid fa-train"></i> Depart: '+ fromCode[1] + " at " +moment(obj.SchJourneys[0].Services[i].Trips.Trip[0].Stops.Stop[0].Time, 'hh:mm a').format('hh:mm a');
                         }
     
                         let newMTD = document.createElement('td');
+                        newMTD.className = "fifty";
                         newMTD.innerHTML = 'Transfers: ' + (obj.SchJourneys[0].Services[i].Trips.Trip.length-1);
     
                         let newRTD = document.createElement('td');
-                        newRTD.innerHTML = '<i class="fa-solid fa-location-dot"></i> Arrive: ' + toCode[1] + " at " + moment(obj.SchJourneys[0].Services[i].Trips.Trip[obj.SchJourneys[0].Services[i].Trips.Trip.length -1].Stops.Stop[(obj.SchJourneys[0].Services[i].Trips.Trip[obj.SchJourneys[0].Services[i].Trips.Trip.length -1].Stops.Stop.length - 1)].Time, 'hh:mm a').format('hh:mm a');
+                        newRTD.className = "fifty";
+                        newRTD.innerHTML = '<i style="color:white" class="fa-solid fa-location-dot"></i> Arrive: ' + toCode[1] + " at " + moment(obj.SchJourneys[0].Services[i].Trips.Trip[obj.SchJourneys[0].Services[i].Trips.Trip.length -1].Stops.Stop[(obj.SchJourneys[0].Services[i].Trips.Trip[obj.SchJourneys[0].Services[i].Trips.Trip.length -1].Stops.Stop.length - 1)].Time, 'hh:mm a').format('hh:mm a');
     
                         newTBody.appendChild(newLTD);
                         newTBody.appendChild(newMTD);
