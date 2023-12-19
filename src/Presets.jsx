@@ -180,7 +180,7 @@ function Presets({setJSON})
                             waitHour++;
                         }
 
-                        wait.innerHTML = waitHour + ":" + waitMin;
+                        wait.innerHTML = waitHour.toLocaleString('en-US', {minimumIntegerDigits: 2}) + ":" + waitMin.toLocaleString('en-US', {minimumIntegerDigits: 2});
                     });
                 }
             }

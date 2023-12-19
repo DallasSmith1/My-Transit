@@ -58,8 +58,204 @@ function TripDetails({json})
             duration += time[1] + " minutes";
         }
 
+        invoke("get_fares", {from: json.Trips.Trip[0].Stops.Stop[0].Code, to: destination}).then((fares) => {
+            let details = JSON.parse(fares);
+    
+            //https://tickets.gotransit.com/en-us/book?type=p2p&ticket_adult=1&start_address=WH&start_name=Whitby%20GO&end_address=EX&end_name=&utm_source=google&utm_campaign=GoTransitSEM&utm_medium=sem_paid
+            //https://prestocard.ca/en/about/get-a-presto-card
+
+            let val = document.getElementById("adultSingle");
+            val.innerHTML = "";
+            let a = document.createElement("a");
+            a.innerHTML = "$"+details.AllFares.FareCategory[0].Tickets[0].Fares[0].Amount.toFixed(2);
+            a.href = "https://tickets.gotransit.com/en-us/book?type=p2p&ticket_adult=1&start_address="+json.Trips.Trip[0].Stops.Stop[0].Code+"&end_address="+destination+"&utm_source=google&utm_campaign=GoTransitSEM&utm_medium=sem_paid";
+            a.target = "_blank";
+            a.className = "black";
+            val.appendChild(a);
+
+            let val2 = document.getElementById("adultDay");
+            val2.innerHTML = "";
+            let a2 = document.createElement("a");
+            a2.innerHTML = "$"+details.AllFares.FareCategory[0].Tickets[0].Fares[1].Amount.toFixed(2);
+            a2.href = "https://tickets.gotransit.com/en-us/book?type=p2p&mode=round_trip&ticket_adult=1&start_address="+json.Trips.Trip[0].Stops.Stop[0].Code+"&end_address="+destination+"&utm_source=google&utm_campaign=GoTransitSEM&utm_medium=sem_paid";
+            a2.target = "_blank";
+            a2.className = "black";
+            val2.appendChild(a2);
+
+            let val3 = document.getElementById("adultPresto");
+            val3.innerHTML = "";
+            let a3 = document.createElement("a");
+            a3.innerHTML = "$"+details.AllFares.FareCategory[0].Tickets[1].Fares[0].Amount.toFixed(2);
+            a3.href = "https://prestocard.ca/en/about/get-a-presto-card";
+            a3.target = "_blank";
+            a3.className = "black";
+            val3.appendChild(a3);
+
+            let val4 = document.getElementById("studentSingle");
+            val4.innerHTML = "";
+            let a4 = document.createElement("a");
+            a4.innerHTML = "$"+details.AllFares.FareCategory[1].Tickets[0].Fares[0].Amount.toFixed(2);
+            a4.href = "https://tickets.gotransit.com/en-us/book?type=p2p&ticket_adult=1&start_address="+json.Trips.Trip[0].Stops.Stop[0].Code+"&end_address="+destination+"&utm_source=google&utm_campaign=GoTransitSEM&utm_medium=sem_paid";
+            a4.target = "_blank";
+            a4.className = "black";
+            val4.appendChild(a4);
+
+            let val5 = document.getElementById("studentDay");
+            val5.innerHTML = "";
+            let a5 = document.createElement("a");
+            a5.innerHTML = "$"+details.AllFares.FareCategory[1].Tickets[0].Fares[1].Amount.toFixed(2);
+            a5.href = "https://tickets.gotransit.com/en-us/book?type=p2p&mode=round_trip&ticket_adult=1&start_address="+json.Trips.Trip[0].Stops.Stop[0].Code+"&end_address="+destination+"&utm_source=google&utm_campaign=GoTransitSEM&utm_medium=sem_paid";
+            a5.target = "_blank";
+            a5.className = "black";
+            val5.appendChild(a5);
+
+            let val6 = document.getElementById("studentPresto");
+            val6.innerHTML = "";
+            let a6 = document.createElement("a");
+            a6.innerHTML = "$"+details.AllFares.FareCategory[1].Tickets[1].Fares[0].Amount.toFixed(2);
+            a6.href = "https://prestocard.ca/en/about/get-a-presto-card";
+            a6.target = "_blank";
+            a6.className = "black";
+            val6.appendChild(a6);
+
+            let val7 = document.getElementById("seniorSingle");
+            val7.innerHTML = "";
+            let a7 = document.createElement("a");
+            a7.innerHTML = "$"+details.AllFares.FareCategory[2].Tickets[0].Fares[0].Amount.toFixed(2);
+            a7.href = "https://tickets.gotransit.com/en-us/book?type=p2p&ticket_senior=1&start_address="+json.Trips.Trip[0].Stops.Stop[0].Code+"&end_address="+destination+"&utm_source=google&utm_campaign=GoTransitSEM&utm_medium=sem_paid";
+            a7.target = "_blank";
+            a7.className = "black";
+            val7.appendChild(a7);
+
+            let val8 = document.getElementById("seniorDay");
+            val8.innerHTML = "";
+            let a8 = document.createElement("a");
+            a8.innerHTML = "$"+details.AllFares.FareCategory[2].Tickets[0].Fares[1].Amount.toFixed(2);
+            a8.href = "https://tickets.gotransit.com/en-us/book?type=p2p&mode=round_trip&ticket_senior=1&start_address="+json.Trips.Trip[0].Stops.Stop[0].Code+"&end_address="+destination+"&utm_source=google&utm_campaign=GoTransitSEM&utm_medium=sem_paid";
+            a8.target = "_blank";
+            a8.className = "black";
+            val8.appendChild(a8);
+
+            let val9 = document.getElementById("seniorPresto");
+            val9.innerHTML = "";
+            let a9 = document.createElement("a");
+            a9.innerHTML = "$"+details.AllFares.FareCategory[2].Tickets[1].Fares[0].Amount.toFixed(2);
+            a9.href = "https://prestocard.ca/en/about/get-a-presto-card";
+            a9.target = "_blank";
+            a9.className = "black";
+            val9.appendChild(a9);
+
+            document.getElementById("childSingle").innerHTML = "$"+details.AllFares.FareCategory[3].Tickets[0].Fares[0].Amount.toFixed(2);
+            document.getElementById("childDay").innerHTML = "$"+details.AllFares.FareCategory[3].Tickets[0].Fares[1].Amount.toFixed(2);
+            document.getElementById("childPresto").innerHTML = "$"+details.AllFares.FareCategory[3].Tickets[1].Fares[0].Amount.toFixed(2);
+
+            let val1 = document.getElementById("group");
+            val1.innerHTML = "";
+            let a1 = document.createElement("a");
+            a1.innerHTML = "$30.00-$60.00";
+            a1.href = "https://tickets.gotransit.com/en-us/?utm_source=google&utm_campaign=GoTransitSEM&utm_medium=sem_paid";
+            a1.target = "_blank";
+            a1.className = "black";
+            val1.appendChild(a1);
+        });
+
         return (
+            <>
             <h3><i class="fa-solid fa-stopwatch"></i> {duration}</h3>
+            <div class="btn-group">
+            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa-solid fa-dollar-sign"></i>
+            </button>
+            <div class="dropdown-menu">
+                <table>
+                    <tbody style={{textAlign: "center"}}>
+                        <tr>
+                            <td colSpan={4} >Estimate Fare Prices</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b></b>
+                            </td>
+                            <td>
+                                <b>Single</b>
+                            </td>
+                            <td>
+                                <b>Day</b>
+                            </td>
+                            <td>
+                                <b>Presto</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Adult</b>
+                            </td>
+                            <td className="faretd" id="adultSingle">
+                                $0.00
+                            </td>
+                            <td className="faretd" id="adultDay">
+                                $0.00
+                            </td>
+                            <td className="faretd" id="adultPresto">
+                                $0.00
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Student</b>
+                            </td>
+                            <td className="faretd" id="studentSingle">
+                                $0.00
+                            </td>
+                            <td className="faretd" id="studentDay">
+                                $0.00
+                            </td>
+                            <td className="faretd" id="studentPresto">
+                                $0.00
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Senior</b>
+                            </td>
+                            <td className="faretd" id="seniorSingle">
+                                $0.00
+                            </td>
+                            <td className="faretd" id="seniorDay">
+                                $0.00
+                            </td>
+                            <td className="faretd" id="seniorPresto">
+                                $0.00
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Child</b>
+                            </td>
+                            <td className="faretd" id="childSingle">
+                                $0.00
+                            </td>
+                            <td className="faretd" id="childDay">
+                                $0.00
+                            </td>
+                            <td className="faretd" id="childPresto">
+                                $0.00
+                            </td>
+                        </tr>
+                        <br/>
+                        <tr>
+                            <td colSpan={2}>
+                                <b>Group Pass</b>
+                            </td>
+                            <td className="faretd" id="group" colSpan={2}>
+                                $0.00
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+            </>
         );
     }
     

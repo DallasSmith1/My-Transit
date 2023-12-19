@@ -52,6 +52,9 @@ table {
 .headerl {
   text-align: left;
 }
+.headerc {
+  text-align: center;
+}
 .headerr {
   text-align: right;
 }
@@ -66,6 +69,16 @@ table {
 .primary {
     font-size: xx-large;
     white-space: pre-wrap;
+}
+
+.black {
+  color: black;
+}
+
+.faretd {
+  border-color: black;
+  border-style:solid;
+  border-width: 1px;
 }
 
 .secondary {

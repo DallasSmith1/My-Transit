@@ -10,7 +10,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 function App()
 {
     const [json, setJSON] = useState({});
-    //const [json2, setJSON2] = useState({});
+    //const [url, setURL] = useState({});
 
 
     return(

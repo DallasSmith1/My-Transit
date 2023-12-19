@@ -3,8 +3,6 @@ import { useHistory } from "react-router-dom";
 import { invoke } from "@tauri-apps/api/tauri";
 import { createElement } from "react";
 
-// async function alternative
-// runs the async api call, stores the json in local storage, then href's to the details page
 function Stations()
 {
     async function search() {
@@ -13,7 +11,7 @@ function Stations()
             let stop = document.getElementById("searchInput");
             let code = stop.value.split(" | ")[1];
 
-            let out = await invoke("get_stop_details", { stop: code })
+            let out = await invoke("get_stop_details", { stop: code });
 
             let json = JSON.parse(out);
 
@@ -77,8 +75,26 @@ function Stations()
             result.appendChild(div);
 
 
+            let subtd = document.createElement("div");
+
+            let alertsJSON = await invoke("get_alerts");
+            let alerts = JSON.parse(alertsJSON);
+
+            for (let i = 0; i < alerts.entity.length; i++)
+            {
+                if (alerts.entity[i].alert.informed_entity[0].stop_id == json.Stop.Code)
+                {
+                    subtd.innerHTML = '<div class="info"><h2 class="middle"><i class="fa-solid fa-triangle-exclamation"></i> NOTICE</h2><p class="middle">'+alerts.entity[i].alert.description_text.translation[0].text+'</p></div>';
+                }
+            }
+
+            result.appendChild(subtd);
+
+
             let subtable = document.createElement("table");
             let subbody = document.createElement("body");
+
+            let subtr1 = document.createElement("tr");
             let subtd1 = document.createElement("td");
             if (json.Stop.Facilities.length > 0)
             {
@@ -89,7 +105,8 @@ function Stations()
                 }
                 subtd1.innerHTML = '<div class="info"><h2 class="middle">Facilities</h2><p class="middle">'+list+'</p></div>';
             }
-            subbody.appendChild(subtd1);
+
+            subtr1.appendChild(subtd1);
 
             let subtd2 = document.createElement("td");
             if (json.Stop.Parkings.length > 0)
@@ -101,7 +118,8 @@ function Stations()
                 }
                     subtd2.innerHTML = '<div class="info"><h2 class="middle"><i class="fa-solid fa-square-parking"></i> Parking</h2><p class="middle">'+list+'</p></div>';
             }
-            subbody.appendChild(subtd2);
+            subtr1.appendChild(subtd2);
+            subbody.appendChild(subtr1);
             subtable.appendChild(subbody);
             result.appendChild(subtable);
         }

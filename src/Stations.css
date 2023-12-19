@@ -37,6 +37,10 @@ body {
     color: gold;
 }
 
+.fa-triangle-exclamation{
+    color: yellow;
+}
+
 .middle {
     text-align: center;
 }
