@@ -1,7 +1,5 @@
 import "./Stations.css";
-import { useHistory } from "react-router-dom";
 import { invoke } from "@tauri-apps/api/tauri";
-import { createElement } from "react";
 
 function Stations()
 {

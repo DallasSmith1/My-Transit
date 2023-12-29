@@ -71,6 +71,10 @@ table {
     white-space: pre-wrap;
 }
 
+.frontRed {
+  color: rgb(224, 0, 0);
+}
+
 .black {
   color: black;
 }

@@ -5,6 +5,7 @@ import Schedule from "./Schedule";
 import Stations from "./Stations";
 import Presets from "./Presets";
 import TripDetails from "./TripDetails";
+import BottomNav from "./BottomNav";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 function App()
@@ -35,6 +36,7 @@ function App()
                     </Route>
                 </Switch>
             </div>
+            <BottomNav />
         </div>
     )
 }

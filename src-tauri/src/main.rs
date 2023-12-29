@@ -9,7 +9,16 @@ use std::fs::read_dir;
 use std::fs::create_dir;
 use std::path::Path;
 
-//
+//http://api.openmetrolinx.com/OpenDataAPI/api/V1/ServiceUpdate/ServiceAlert/All?key=30023794
+
+#[tauri::command]
+async fn get_service_alerts() -> Result<String, String> {
+    let url = "http://api.openmetrolinx.com/OpenDataAPI/api/V1/ServiceUpdate/ServiceAlert/All?key=30023794";
+    let response = reqwest::get(url).await.unwrap();
+    let json_response = response.text().await.unwrap();
+
+    Ok(json_response)
+}
 
 #[tauri::command]
 async fn get_all_buses() -> Result<String, String> {
@@ -186,7 +195,7 @@ fn get_all_presets() -> Result<String, String> {
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![get_all_buses, get_all_trains, get_trip_info, get_train_exceptions, get_next_service, get_bus_exceptions, get_all_stops, get_stop_details, get_schedules, create_presets, delete_presets, get_presets, get_selected_presets, set_selected_presets, get_all_presets, get_fares, get_alerts])
+        .invoke_handler(tauri::generate_handler![get_service_alerts, get_all_buses, get_all_trains, get_trip_info, get_train_exceptions, get_next_service, get_bus_exceptions, get_all_stops, get_stop_details, get_schedules, create_presets, delete_presets, get_presets, get_selected_presets, set_selected_presets, get_all_presets, get_fares, get_alerts])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

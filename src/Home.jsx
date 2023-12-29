@@ -76,20 +76,23 @@ function Home()
 
                                                     let found = false;
 
-                                                    if (date.getTime() < tripDepartureTime.getTime())
+                                                    let departureStatus = "";
+                                                    if (nextServices.NextService != null)
                                                     {
                                                         for (let i = 0; i < nextServices.NextService.Lines.length && !found; i++)
                                                         {
                                                             if (nextServices.NextService.Lines[i].TripNumber == mytrip.Trips.Trip[0].Number)
                                                             {
                                                                 found = true;
+    
+                                                                departureStatus = nextServices.NextService.Lines[i].DepartureStatus;
 
                                                                 let actualTime = document.getElementById("actualTime");
-
+    
                                                                 let aTime = nextServices.NextService.Lines[i].ComputedDepartureTime.split(" ");
                                                                 aTime = moment(aTime[1].slice(0, -3), 'hh:mm a').format('hh:mm a');
                                                                 actualTime.innerHTML = "Actual: " + aTime;
-
+    
                                                                 let card = document.getElementById("display");
                                                                 let status = document.getElementById("status");
                                                                 if (sTime == aTime)
@@ -102,8 +105,8 @@ function Home()
                                                                     status.innerHTML = "DELAYED";
                                                                     card.className = "tripcard yellow";
                                                                 }
-
-
+    
+    
                                                                 for (let tripstop = 0; tripstop < trainTrip.Trips[0].Stops.length; tripstop++)
                                                                 {
                                                                     if (trainTrip.Trips[0].Stops[tripstop].Code == mytrip.Trips.Trip[0].Stops.Stop[0].Code)
@@ -111,7 +114,7 @@ function Home()
                                                                         let track = document.getElementById("track");
                                                                         if (trainTrip.Trips[0].Stops[tripstop].Track.Scheduled != "")
                                                                         {
-                                                                            track.innerHTML = "Track: " + trainTrip.Trips[0].Stops[tripstop].Track.Scheduled;
+                                                                            track.innerHTML = "Platform: " + trainTrip.Trips[0].Stops[tripstop].Track.Scheduled;
                                                                         }
                                                                         else
                                                                         {
@@ -122,14 +125,15 @@ function Home()
                                                             }
                                                         }
                                                     }
-                                                    else
+                                                    
+                                                    if ((date.getTime() > tripDepartureTime.getTime() && !found) || departureStatus == "A")
                                                     {
+                                                        let card = document.getElementById("display");
                                                         let status = document.getElementById("status");
                                                         status.innerHTML = "DEPARTED";
-                                                        status.className = "tripcard green";
+                                                        card.className = "tripcard green";
                                                     }
 
-                                                    
                                                     let longitude = 0;
                                                     let latitude = 0;
                                                     let features = [
@@ -158,6 +162,35 @@ function Home()
                                                             type: "train",
                                                             },
                                                         ];
+
+                                                        for (let exception = 0; exception< trainExceptions.Trip.length; exception++)
+                                                        {
+                                                            if (trainExceptions.Trip[exception].TripNumber == mytrip.Trips.Trip[0].Number)
+                                                            {
+                                                                if (trainExceptions.Trip[exception].IsCancelled == "1")
+                                                                {
+                                                                    let card = document.getElementById("display");
+                                                                    let status = document.getElementById("status");
+                                                                    status.innerHTML = "CANCELED";
+                                                                    card.className = "tripcard red";
+                                                                }
+                                                                
+                                                                let updates = document.getElementById("updates");
+                                                                updates.innerHTML = "";
+
+                                                                for (let stopInfo = 0; stopInfo < trainExceptions.Trip[exception].Stop.length; stopInfo++)
+                                                                {
+                                                                    if (trainExceptions.Trip[exception].Stop[stopInfo].IsCancelled == "1")
+                                                                    {
+                                                                        updates.innerHTML += "Stop: " + trainExceptions.Trip[exception].Stop[stopInfo].Name + " - Canceled.";
+                                                                    }
+                                                                    else if (trainExceptions.Trip[exception].Stop[stopInfo].IsStopping == "1")
+                                                                    {
+                                                                        updates.innerHTML += "Stop: " + trainExceptions.Trip[exception].Stop[stopInfo].Name + " - Stopped.";
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                     else
                                                     {
@@ -178,6 +211,36 @@ function Home()
                                                             type: "bus",
                                                             },
                                                         ];
+
+                                                        for (let exception = 0; exception< busExceptions.Trip.length; exception++)
+                                                        {
+                                                            if (busExceptions.Trip[exception].TripNumber == mytrip.Trips.Trip[0].Number)
+                                                            {
+                                                                if (busExceptions.Trip[exception].IsCancelled == "1")
+                                                                {
+                                                                    let card = document.getElementById("display");
+                                                                    let status = document.getElementById("status");
+                                                                    status.innerHTML = "CANCELED";
+                                                                    card.className = "tripcard red";
+                                                                }
+                                                                
+                                                                let updates = document.getElementById("updates");
+                                                                updates.innerHTML = "";
+
+                                                                for (let stopInfo = 0; stopInfo < busExceptions.Trip[exception].Stop.length; stopInfo++)
+                                                                {
+                                                                    if (busExceptions.Trip[exception].Stop[stopInfo].IsCancelled == "1")
+                                                                    {
+                                                                        updates.innerHTML += "Stop: " + busExceptions.Trip[exception].Stop[stopInfo].Name + " Canceled.";
+                                                                    }
+                                                                    else if (busExceptions.Trip[exception].Stop[stopInfo].IsStopping == "1")
+                                                                    {
+                                                                        updates.innerHTML += "Stop: " + busExceptions.Trip[exception].Stop[stopInfo].Name + " Stopped.";
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+
                                                     }
 
                                                     map = new google.maps.Map(document.getElementById("map"), {
@@ -194,6 +257,7 @@ function Home()
                                                         }
                                                     };
                                             
+
                                                     // Create markers.
                                                     for (let i = 0; i < features.length; i++) {
                                                         const marker = new google.maps.Marker({
@@ -224,10 +288,8 @@ function Home()
             }
             else
             {
-                
+                // go to about page
             }
-
-            
         })
 
     }
@@ -256,7 +318,7 @@ function Home()
                                         <td className="hometd homelabeltd" id="actualTime">Actual:N/A</td>
                                     </tr>
                                     <tr className="homedetailtr">
-                                        <td className="hometd homelabeltd" id="track">Track: N/A</td>
+                                        <td className="hometd homelabeltd" id="track">Platform: N/A</td>
                                     </tr>
                                     <tr className="homedetailtr">
                                         <td className="hometd homelabeltd" id="departure">Display: N/A</td>
@@ -283,7 +345,6 @@ function Home()
                     </tr>
                 </tbody>
             </table>
-
         </div>
     );
 }

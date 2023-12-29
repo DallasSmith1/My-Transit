@@ -359,6 +359,7 @@ function TripDetails({json})
             } 
         }
 
+
         invoke("get_stop_details", {stop: trip.Stops.Stop[0].Code}).then((stopDetails) => {
             let details = JSON.parse(stopDetails);
      
@@ -372,7 +373,7 @@ function TripDetails({json})
                 <table><tbody><td className="bigTDl"><TransitIcon type={trip.Type}/> Board <TransitName type={trip.Type}/></td><td className="bigTD"> <i class="fa-solid fa-map-pin"></i> <a href="#popup1" id={trip.Stops.Stop[0].Code} onClick={() => GetStationDetails(trip.Stops.Stop[0].Code)}>{trip.Stops.Stop[0].Code}</a></td><td className="bigTDr">{moment(trip.Stops.Stop[0].Time, 'hh:mm a').format('hh:mm a')}</td></tbody></table><hr/>
                 {stops.map(function(obj) {
                 return (
-                    <StopDetails stop={obj}/>
+                    <StopDetails stop={obj} number={trip.Number}/>
                 );
                 })}
                 <ArriveIcon code={trip.Stops.Stop[trip.Stops.Stop.length-1].Code} last={last} time={moment(trip.Stops.Stop[trip.Stops.Stop.length-1].Time, 'hh:mm a').format('hh:mm a')} Type={trip.Type}/> 
@@ -380,16 +381,56 @@ function TripDetails({json})
         )
     }
 
-    function StopDetails({stop})
+    function StopDetails({stop, number})
     {   
         invoke("get_stop_details", {stop: stop.Code}).then((stopDetails) => {
             let details = JSON.parse(stopDetails);
   
             let start = document.getElementById(details.Stop.Code);
             start.innerHTML = details.Stop.StopName + " | " + details.Stop.Code;
+
+            invoke("get_train_exceptions").then((trainExceptions) => {
+                trainExceptions = JSON.parse(trainExceptions);
+                invoke("get_bus_exceptions").then((busExceptions) => {
+                    busExceptions = JSON.parse(busExceptions);
+                    for (let i = 0; i < trainExceptions.Trip.length; i++)
+                    {
+                        if (trainExceptions.Trip[i].TripNumber == number)
+                        {
+                            for (let j = 0; j < trainExceptions.Trip[i].Stop.length; j++)
+                            {
+                                if (trainExceptions.Trip[i].Stop[j].Code == stop.Code)
+                                {
+                                    if (trainExceptions.Trip[i].Stop[j].IsCancelled == "1")
+                                    {
+                                        start.innerHTML = '<strong class="frontRed" ><i class="fa-solid fa-triangle-exclamation"></i> CANCELED</strong>';
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    for (let i = 0; i < busExceptions.Trip.length; i++)
+                    {
+                        if (busExceptions.Trip[i].TripNumber == number)
+                        {
+                            for (let j = 0; j < busExceptions.Trip[i].Stop.length; j++)
+                            {
+                                if (busExceptions.Trip[i].Stop[j].Code == stop.Code)
+                                {
+                                    if (busExceptions.Trip[i].Stop[j].IsCancelled == "1")
+                                    {
+                                        start.innerHTML = '<strong class="frontRed" ><i class="fa-solid fa-triangle-exclamation"></i> CANCELED</strong>';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                })
+            })
         });
         return (
-            <p className="secondary"><i class="fa-solid fa-map-pin"></i> <a  id={stop.Code} href="#popup1" onClick={() => GetStationDetails(stop.Code)}>{stop.Code}</a> - {moment(stop.Time, 'hh:mm a').format('hh:mm a')}</p>
+            <p className="secondary" id={"p_"+stop.code}><i class="fa-solid fa-map-pin"></i> <a  id={stop.Code} href="#popup1" onClick={() => GetStationDetails(stop.Code)}>{stop.Code}</a> - {moment(stop.Time, 'hh:mm a').format('hh:mm a')}</p>
         )
     }
 

@@ -1,0 +1,53 @@
+.bringFront {
+    z-index: 900;
+}
+
+#scroll-container {
+    overflow: hidden;
+    background-color: black;
+    width:98vw;
+    height: 3vh;
+    min-height: 30px;
+  }
+  
+  #scroll-text {
+    /* animation properties */
+
+    -moz-transform: translateX(100%);
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    -moz-animation: my-animation 60s linear infinite;
+    -webkit-animation: my-animation 60s linear infinite;
+    animation: my-animation 60s linear infinite;
+    color: white;
+    font-size: x-large;
+    font-family:monospace;
+    white-space: nowrap;
+
+    animation: my-animation var(--animation-duration) linear infinite;
+  }
+  
+  /* for Firefox */
+  @-moz-keyframes my-animation {
+    from { -moz-transform: translateX(100%); }
+    to { -moz-transform: translateX(-100%); }
+  }
+  
+  /* for Chrome */
+  @-webkit-keyframes my-animation {
+    from { -webkit-transform: translateX(100%); }
+    to { -webkit-transform: translateX(-100%); }
+  }
+  
+  @keyframes my-animation {
+    from {
+      -moz-transform: translateX(100%);
+      -webkit-transform: translateX(100%);
+      transform: translateX(100%);
+    }
+    to {
+      -moz-transform: translateX(-100%);
+      -webkit-transform: translateX(-100%);
+      transform: translateX(-100%);
+    }
+}

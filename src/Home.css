@@ -4,7 +4,7 @@
     width: 50vw;
     height: 60vh;
     border-style: solid;
-    border-color: rgb(0, 99, 0);
+    border-color: black;
 }
 
 .homedetailtable
@@ -23,12 +23,12 @@
 .homeupdatetd{
     vertical-align: middle;
     border-style: solid;
-    border-color: rgb(0, 99, 0);
+    border-color: black;
 }
 
 .homestatus {
     border-style: solid;
-    border-color: rgb(0, 99, 0);
+    border-color: black;
 }
 
 .homedetailtr {
@@ -46,7 +46,7 @@
 .homeupdatevaluetd{
     text-align: left;
     border-style: solid;
-    border-color: rgb(0, 99, 0);
+    border-color: black;
 }
 
 #map {

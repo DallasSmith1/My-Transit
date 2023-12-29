@@ -163,7 +163,7 @@ function Schedule({setJSON})
     });
 
     return (
-        <div className="container" style={{alignItems: "center"}}>
+        <div className="container schedulesize" style={{alignItems: "center"}}>
         <h1>Search Scheduled Trips</h1>
         <label>Date and Time of Departure:</label>
         <input type="datetime-local" id="time" name="time" style={{width: 250}}></input><br/>
