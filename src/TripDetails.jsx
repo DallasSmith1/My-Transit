@@ -484,7 +484,7 @@ function TripDetails({json})
 
     function SavePreset()
     {
-        invoke("create_presets", { json: JSON.stringify(json), hash: json.tripHash });
+        invoke("create_presets", { json: JSON.stringify(json), hash:  json.Trips.Trip[0].Stops.Stop[0].Code+"-"+json.Trips.Trip[(json.Trips.Trip.length)-1].Stops.Stop[json.Trips.Trip[(json.Trips.Trip.length)-1].Stops.Stop.length-1].Code+"--" + json.tripHash});
     }
 
     return (
@@ -494,7 +494,7 @@ function TripDetails({json})
                     <tr>
                         <td className="headerl">
                             <button onClick={function() {
-                                navigate.push('/schedule');
+                                navigate.goBack();
                             }}>
                                 <i className="fa-solid fa-chevron-left"></i> Back
                             </button>

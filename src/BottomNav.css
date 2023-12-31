@@ -2,52 +2,30 @@
     z-index: 900;
 }
 
-#scroll-container {
-    overflow: hidden;
-    background-color: black;
-    width:98vw;
-    height: 3vh;
-    min-height: 30px;
-  }
-  
-  #scroll-text {
-    /* animation properties */
+.slider-container {
+  position: relative;
+  overflow: hidden;
+  width: 98vw;
+  height: 4vh;
+  min-height: 35px;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: black;
+}
 
-    -moz-transform: translateX(100%);
-    -webkit-transform: translateX(100%);
-    transform: translateX(100%);
-    -moz-animation: my-animation 60s linear infinite;
-    -webkit-animation: my-animation 60s linear infinite;
-    animation: my-animation 60s linear infinite;
-    color: white;
-    font-size: x-large;
-    font-family:monospace;
-    white-space: nowrap;
+.slider-content {
+  position: absolute;
+  white-space: nowrap;
+  animation: slide linear infinite;
+  color: white;
+  font-size: x-large;
+}
 
-    animation: my-animation var(--animation-duration) linear infinite;
+@keyframes slide {
+  0% {
+    transform: translateX(98vw);
   }
-  
-  /* for Firefox */
-  @-moz-keyframes my-animation {
-    from { -moz-transform: translateX(100%); }
-    to { -moz-transform: translateX(-100%); }
+  100% {
+    transform: translateX(-100%);
   }
-  
-  /* for Chrome */
-  @-webkit-keyframes my-animation {
-    from { -webkit-transform: translateX(100%); }
-    to { -webkit-transform: translateX(-100%); }
-  }
-  
-  @keyframes my-animation {
-    from {
-      -moz-transform: translateX(100%);
-      -webkit-transform: translateX(100%);
-      transform: translateX(100%);
-    }
-    to {
-      -moz-transform: translateX(-100%);
-      -webkit-transform: translateX(-100%);
-      transform: translateX(-100%);
-    }
 }

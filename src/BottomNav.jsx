@@ -10,6 +10,7 @@ function BottomNav()
 
         text.innerHTML = "";
 
+        let numCharacters = 0;
         
         for (let i = 0; i < alerts.entity.length; i++)
         {
@@ -19,20 +20,25 @@ function BottomNav()
                     stopDetails = JSON.parse(stopDetails);
                     let alertText = document.getElementById("scroll-text");
                     alertText.innerHTML = alertText.innerHTML + " | " + alerts.entity[i].alert.header_text.translation[0].text + " at " + stopDetails.Stop.StopName;
-                    console.log(" | " + alerts.entity[i].alert.header_text.translation[0].text + " at " + stopDetails.Stop.StopName);
+
+                    const scrollText = document.getElementById('scroll-text');
+                    const animationDuration = (scrollText.scrollWidth / scrollText.clientWidth) * 100; // Adjust multiplier as needed
+                    scrollText.style.setProperty('--animation-duration', animationDuration + 's');
+                    // Get the elements
+                    let sliderContent = document.getElementById('scroll-text');
+
+                    let duration = (scrollText.scrollWidth + scrollText.clientWidth) / 100; // Adjust the factor as needed
+                
+                    // Apply the dynamic duration to the animation
+                    sliderContent.style.animationDuration = `${duration}s`;
                 });
             }
             else
             {
                 let alertText2 = document.getElementById("scroll-text");
                 alertText2.innerHTML = alertText2.innerHTML + " | " + alerts.entity[i].alert.header_text.translation[0].text;
-                console.log(" | " + alerts.entity[i].alert.header_text.translation[0].text);
             }
         }
-
-        const scrollText = document.getElementById('scroll-text');
-        const animationDuration = (scrollText.scrollWidth / scrollText.clientWidth) * 30; // Adjust multiplier as needed
-        scrollText.style.setProperty('--animation-duration', animationDuration + 's');
     });
 
 
@@ -43,10 +49,10 @@ function BottomNav()
         <br/>
         <nav className="navbar foxed-bottom navbar-dark bg-dark bringFront" style={{position: "fixed", overflow: "hidden", bottom: 0,width: '100%', left: 0}}>
             <span className="navbar-text">
-                <div id="scroll-container">
+                <div id="scroll-container" className="slider-container">
                     <div>
-                        <p id="scroll-text">
-
+                        <p id="scroll-text" className="slider-content">
+                            
                         </p>
                     </div>
                 </div>

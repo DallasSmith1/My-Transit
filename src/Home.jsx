@@ -1,9 +1,12 @@
 import "./Home.css";
 import { invoke } from "@tauri-apps/api/tauri";
 import moment from "moment";
+import { useHistory } from "react-router-dom";
 
 function Home()
 {
+    const navigate = useHistory();
+
     let map;
 
     let first = true;
@@ -288,7 +291,7 @@ function Home()
             }
             else
             {
-                // go to about page
+                navigate.push("./about");
             }
         })
 

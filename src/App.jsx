@@ -6,6 +6,8 @@ import Stations from "./Stations";
 import Presets from "./Presets";
 import TripDetails from "./TripDetails";
 import BottomNav from "./BottomNav";
+import About from "./About";
+import Alerts from "./Alerts";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 function App()
@@ -33,6 +35,12 @@ function App()
                     </Route>
                     <Route exact path="/tripdetails">
                         <TripDetails json={json}/>
+                    </Route>
+                    <Route exact path="/about">
+                        <About/>
+                    </Route>
+                    <Route exact path="/alerts">
+                        <Alerts/>
                     </Route>
                 </Switch>
             </div>

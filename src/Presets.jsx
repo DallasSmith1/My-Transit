@@ -5,6 +5,7 @@ import { invoke } from "@tauri-apps/api/tauri";
 
 function Presets({setJSON})
 {
+    let allCardIds = [];
     let currentJSON = "";
     const navigate = useHistory();
     invoke("get_selected_presets").then((selected) => {
@@ -22,8 +23,7 @@ function Presets({setJSON})
                 {
                     presetNum = presetNum.replace("_","");
                 }
-                console.log(presetNum);
-                if (!isNaN(presetNum))
+                if (!isNaN(presetNum.split("--")[1]))
                 {
                     presets.push(preset);
                 }
@@ -35,13 +35,22 @@ function Presets({setJSON})
 
             if (presets.length == 0)
             {
-                
+                let button = document.createElement("button");
+                button.onclick = function() {
+                    navigate.push("./schedule");
+                }
+                button.innerHTML = "See Schedules";
+
+                let p = document.createElement("p");
+                p.innerHTML = "It seems you do not have any trips saved. To save a trip, head over to <a href='./schedule' class='aboutPage'>schedules<a/>, search for a trip, and save one that you would like to save! If you have trouble, <a href='./about' class='aboutPage'>click here<a/> for further details and instructions.";
+            
+                div.appendChild(p);
+                div.appendChild(button);
             }
     
-            for (let i = 1; i < presets.length; i++)
+            for (let i = 0; i < presets.length; i++)
             {
                 let article = document.createElement("article");
-                
                 if (selected.includes(presets[i]))
                 {
                     article.className = "cta_select";
@@ -49,17 +58,23 @@ function Presets({setJSON})
                 else
                 {
                     article.className = "cta";
+                    article.onclick = function () {
+                        ShowBasicDetails(presets[i]);
+                    }
+                    article.id = "article_"+presets[i];
                 }
 
-    
+                
+                
+
                 let ctaDiv = document.createElement("div");
                 ctaDiv.className = "cta__text-column";
     
                 let h2 = document.createElement("h2");
-                h2.innerHTML = presets[i];
+                h2.innerHTML = presets[i].split("-")[0] + " | " +presets[i].split("-")[3] + " | " +presets[i].split("-")[1];
     
                 let a1 = document.createElement("a");
-                a1.innerHTML = "Select as main";
+                a1.innerHTML = "Track On Dashboard";
                 let newHash = presets[i] + "_";
                 a1.onclick =  function () {
                     invoke("set_selected_presets", {hash: newHash}).then((result) => {
@@ -90,7 +105,16 @@ function Presets({setJSON})
                         });
                     }
                 }
+
+                let detailsP = document.createElement("p");
+                detailsP.id = presets[i];
+                if (!selected.includes(presets[i]))
+                {
+                    allCardIds.push(presets[i]);
+                }
+
                 ctaDiv.appendChild(a2);
+                ctaDiv.appendChild(detailsP);
                 article.appendChild(ctaDiv);
                 div.appendChild(article);
 
@@ -186,6 +210,37 @@ function Presets({setJSON})
             }
         });
     })
+
+    function ShowBasicDetails(id)
+    {
+        for (let i = 0; i < allCardIds.length; i++)
+        {
+            let article = document.getElementById("article_"+allCardIds[i]);
+            let p = document.getElementById(allCardIds[i]);
+            
+            if (id == allCardIds[i])
+            {
+                article.className = "cta_click";
+                let hash = allCardIds[i]+"_";
+                invoke("get_presets", {hash: hash}).then((retPreset) => {
+                    let json = JSON.parse(retPreset);
+                    invoke("get_stop_details", {stop: json.Trips.Trip[0].Stops.Stop[0].Code}).then((startDetails) => {
+                        let details = JSON.parse(startDetails);
+                        invoke("get_stop_details", {stop: json.Trips.Trip[json.Trips.Trip.length-1].Stops.Stop[json.Trips.Trip[json.Trips.Trip.length-1].Stops.Stop.length-1].Code}).then((stopDetails) => {
+                            stopDetails = JSON.parse(stopDetails);
+                            p.innerHTML = details.Stop.StopName + " to " + stopDetails.Stop.StopName + " at " + moment(json.Trips.Trip[0].Stops.Stop[0].Time, 'hh:mm a').format('hh:mm a');
+                        });
+                    });
+                });
+            }
+            else
+            {
+                p.innerHTML = "";
+                article.className = "cta"
+            }
+        }
+    }
+
 
     return (
         <table className="presettable">

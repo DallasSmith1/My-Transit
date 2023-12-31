@@ -23,7 +23,7 @@ p{
 }
 
 .presets {
-	height: 80vh;
+	height: 73vh;
 	overflow-y:auto;
 }
 
@@ -78,6 +78,19 @@ p{
 	margin-top: 5px;
 }
 
+.cta_click {
+	display: flex;
+	flex-wrap: wrap;
+	background: rgb(0, 162, 255);
+	max-width: 50rem;
+	width: 100%;
+	box-shadow: 0.65rem 0.65rem 0 hsl(var(--shadowColor) / 1);
+	border-radius: 0.8rem;
+	overflow: hidden;
+	border: 0.5rem solid;
+	margin-top: 5px;
+}
+
 .cta img {
 	aspect-ratio: 3 / 2;
 	object-fit: cover;
@@ -119,6 +132,18 @@ p{
 	cursor: pointer;
 }
 
+.cta_click a {
+	display: inline-block;
+	color: black;
+	padding: 0.5rem 1rem;
+	text-decoration: none;
+	background: black;
+	border-radius: 0.6rem;
+	font-weight: 700;
+	border: 0.35rem solid;
+	cursor: pointer;
+	margin-left: 5px;
+}
 
 
 .boarding-pass {
@@ -127,7 +152,7 @@ p{
 	background: #fff;
 	border-radius: 12px;
 	box-shadow: 0 5px 30px rgba(0, 0, 0, .2);
-	overflow: hidden;
+	overflow:auto;
 	text-transform: uppercase;
   
 	small {
@@ -215,6 +240,7 @@ p{
 		strong {
 		  color: #239422;
 		}
+
 	  }
   
 	  .box {

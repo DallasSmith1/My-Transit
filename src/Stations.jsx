@@ -151,6 +151,7 @@ function Stations()
 
         <div className="results" id="results">
         </div>
+        <br/>
     </div>
     );
 }
