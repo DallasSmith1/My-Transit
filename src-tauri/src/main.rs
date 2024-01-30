@@ -1,5 +1,6 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+use std::fs;
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 use std::fs::File;
 use std::fs::remove_file;
@@ -136,11 +137,20 @@ fn delete_presets(hash: &str) -> Result<String, String> {
 
 #[tauri::command]
 fn get_presets(hash: &str) -> Result<String, String> {
-    let mut data_file = File::open(format!("./saved_presets/{}.txt", hash)).unwrap();
     // Create an empty mutable string
     let mut file_content = String::new();
-    // Copy contents of file to a mutable string
-    data_file.read_to_string(&mut file_content).unwrap();
+    if let Ok(metadata) = fs::metadata(format!("./saved_presets/{}.txt", hash)) {
+        if metadata.is_file() {
+            println!("The file exists.");
+            let mut data_file = File::open(format!("./saved_presets/{}.txt", hash)).unwrap();
+            // Copy contents of file to a mutable string
+            data_file.read_to_string(&mut file_content).unwrap();
+        } else {
+            println!("The path exists, but it is not a file.");
+        }
+    } else {
+        println!("The file does not exist or there was an error checking its status.");
+    }
     
     Ok(file_content)
 }
