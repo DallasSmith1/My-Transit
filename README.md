@@ -16,4 +16,4 @@
 <hr/>
 <h3>Installation</h3>
 <p>You will need to have Tauri installed to be able to run this application in visual studio code and play around with it. </p>
-<p>There is also an installer (exe) file for this application as well for anyone to use, if you are interested in installing this application and playing around with it, contact me and I will give you access to the installer file.</p>
+<p>There is also an installer (exe) file for this application as well for anyone to use, if you are interested in installing this application and playing around with it, contact me (dallasagsmith@gmail.com) and I will give you access to the installer file.</p>
