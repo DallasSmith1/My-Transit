@@ -13,3 +13,7 @@
 </ul>
 <img src="https://i.imgur.com/KD24Qq2.png" width="500" height="300"/>
 <p>I created this desktop application solely for personal use and sharing with friends and family, with no intention of publishing it. The project served as a learning opportunity to master Tauri, explore new desktop application development methods, satisfy my curiosity, and broaden my expertise.</p>
+<hr/>
+<h3>Installation</h3>
+<p>You will need to have Tauri installed to be able to run this application in visual studio code and play around with it. </p>
+<p>There is also an installer (exe) file for this application as well for anyone to use, if you are interested in installing this application and playing around with it, contact me and I will give you access to the installer file.</p>
