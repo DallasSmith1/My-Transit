@@ -6,7 +6,7 @@
 <img src="https://i.imgur.com/FvnwzWx.png" width="500" height="300"/>
 <p>The main feature in the app is the live tracking. The app can track a bus or train and provide live GPS pings to display to users. The tracking board also displays other information such as</p>
 <ul>
-  <li>Platform Number</li>
+  <li>Platform Number (up to 1 hour sooner than screens at stations)</li>
   <li>Scheduled Departure Time</li>
   <li>Computed Departure Time</li>
   <li>Any alerts that affect the current trip being tracked</li>
