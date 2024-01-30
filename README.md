@@ -2,7 +2,7 @@
 <p>I developed My Transit, a desktop application for GO Transit, using Tauri and React JS. The app utilizes the GO Transit API to obtain comprehensive transit data, providing users with easy navigation and displaying valuable information that is not readily accessible.</p>
 <p>The app provides detailed information about stations and trips:</p>
 <img src="https://i.imgur.com/IlHBpIp.png" width="500" height="300"/>
-<p>The app provides live alert feeds across the entire service including facilities and/or lines being out of service, future events, and schduled construction. All alerts are easily accessable on the Alerts tab in the app:</p>
+<p>The app provides live alert feeds across the entire service including facilities and/or lines being out of service, future events, and scheduled construction. All alerts are easily accessable on the Alerts tab in the app:</p>
 <img src="https://i.imgur.com/FvnwzWx.png" width="500" height="300"/>
 <p>The main feature in the app is the live tracking. The app can track a bus or train and provide live GPS pings to display to users. The tracking board also displays other information such as</p>
 <ul>
