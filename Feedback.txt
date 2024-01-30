@@ -1,0 +1,7 @@
+- also maybe on the station tab, have an map that highlights GO train/bus terminals and stops, and then have filters to edit the map to what the user is looking for
+
+- maybe add the ability to search schedules without needing to add departure time, that way you can see the full list for the day or something
+
+- add more Line details
+
+- look into dashboard map being "Development Only"

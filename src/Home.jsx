@@ -249,6 +249,7 @@ function Home()
                                                     map = new google.maps.Map(document.getElementById("map"), {
                                                         center: new google.maps.LatLng(latitude, longitude),
                                                         zoom: 14,
+                                                        MediaKeys: "AIzaSyAUGM4Q-2CtUFaarBqiwyG8WhNp02mmORI"
                                                     });
                                             
                                                     const icons = {
